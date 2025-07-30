@@ -1,5 +1,5 @@
 import axiosInstance from "../axiosInstance";
-import { log, logError } from "../lib/logger";
+import { log, logError } from "../utils/logger";
 import { Review } from "../types/reviews";
 
 interface ApiResponse<T> {

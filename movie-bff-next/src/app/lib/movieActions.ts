@@ -3,7 +3,7 @@
 import { deleteMovieById, NewMovie, saveMovie, updateMovieById } from "../api/movieApi";
 import { revalidatePath } from "next/cache";
 import { movieSchema } from "../schema/movieSchema";
-import { log, logError } from "./logger";
+import { log, logError } from "../utils/logger";
 
 interface State {
   errors?: {

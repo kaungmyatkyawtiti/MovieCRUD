@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { loginUser } from "../api/authApi";
 import { loginSchema } from "../schema/loginSchema";
 import { redirect } from "next/navigation";
-import { logError } from "./logger";
+import { logError } from "../utils/logger";
 
 interface State {
   errors?: {
@@ -48,19 +48,16 @@ export async function loginUserAction(
   try {
     const result = await loginUser(userCredentials);
 
-    if (!result.token) {
-      throw new Error("No token returned");
+    if (result.token) {
+      const cookieStore = await cookies();
+
+      cookieStore.set("auth-token", result.token, { httpOnly: true });
+
+      redirectUrl =
+        cookieStore.get("redirectUrl")?.value || "/";
+
+      cookieStore.delete("redirectUrl"); // Optional: clear it after use
     }
-
-    const cookieStore = await cookies();
-
-    cookieStore.set("auth-token", result.token, { httpOnly: true });
-
-    redirectUrl =
-      cookieStore.get("redirectUrl")?.value || "/";
-
-    cookieStore.delete("redirectUrl"); // Optional: clear it after use
-
   } catch (error) {
     logError("Login failed:", error);
 
@@ -74,4 +71,10 @@ export async function loginUserAction(
   }
 
   redirect(redirectUrl);
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete('auth-token');
+  redirect('/login');
 }

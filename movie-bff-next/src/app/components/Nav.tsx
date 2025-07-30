@@ -4,18 +4,25 @@ import { AppBar, Button, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export const Nav = () => {
+interface NavProps {
+  isAuth: boolean;
+}
+
+export const Nav = ({ isAuth }: NavProps) => {
   const pathname = usePathname();
 
   const navItems =
-    [
-      { label: "Home", href: "/" },
-      { label: "Movies", href: "/movies" },
-      // { label: "Dashboard", href: "/dashboard" },
-      // { label: "Blog", href: "/blog" },
-      // { label: "Logout", href: "/logout" },
-      { label: "Login", href: "/login" },
-    ];
+    isAuth
+      ? [
+        { label: "Home", href: "/" },
+        { label: "Movies", href: "/movies" },
+        // { label: "Dashboard", href: "/dashboard" },
+        // { label: "Blog", href: "/blog" },
+        { label: "Logout", href: "/logout" },
+      ]
+      : [
+        { label: "Login", href: "/login" },
+      ];
 
   return (
     <AppBar

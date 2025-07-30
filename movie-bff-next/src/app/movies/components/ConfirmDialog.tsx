@@ -86,7 +86,7 @@ export default function ConfirmDialog(props: ConfirmDialogRawProps) {
         >
           {
             loading
-              ? "Deleting..."
+              ? "Running..."
               : "Ok"
           }
         </Button>

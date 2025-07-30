@@ -2,10 +2,11 @@ import { Box, Stack, Typography } from "@mui/material";
 import { getAllMovies } from "../api/movieApi";
 import MovieEntry from "./components/MovieEntry";
 import MovieUI from "./components/MovieUI";
+import { log } from "../utils/logger";
 
 export default async function MoviePage() {
   const movies = await getAllMovies();
-  console.log(movies);
+  log(movies);
 
   return (
     <Box p={3}>

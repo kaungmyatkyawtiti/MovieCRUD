@@ -6,6 +6,7 @@ import MovieCard from "./MovieCard";
 import { Movie } from "@/app/types/movies";
 import ConfirmDialog from "./ConfirmDialog";
 import { deleteMovieByIdAction } from "@/app/lib/movieActions";
+import { log, logError } from "@/app/utils/logger";
 
 interface InteractiveMovieCardProps {
   movie: Movie;
@@ -31,24 +32,24 @@ export default function InteractiveMovieCard({
     setOpen(true);
   };
 
-  const handleDeleteConfirm = (id: string) => {
+  const handleConfirm = (id: string) => {
     setIsDeleting(true);
 
     startTransition(async () => {
       try {
         await deleteMovieByIdAction(id);
-        console.log("Deleted movie:", id);
+        log("Deleted movie:", id);
         setOpen(false); // ✅ only close on success
       } catch (err) {
-        console.error("Failed to delete movie:", err);
+        logError("Failed to delete movie:", err);
       } finally {
         setIsDeleting(false);
       }
     });
   };
 
-  const handleDeleteDecline = () => {
-    console.log("decline");
+  const handleDecline = () => {
+    log("decline");
     handleClose();
   };
 
@@ -62,8 +63,8 @@ export default function InteractiveMovieCard({
         title={movie.title}
         message={deleteMsg}
         onClose={handleClose}
-        onConfirm={() => targetId && handleDeleteConfirm(targetId)}
-        onCancel={handleDeleteDecline}
+        onConfirm={() => targetId && handleConfirm(targetId)}
+        onCancel={handleDecline}
         loading={isDeleting || isPending} // if ConfirmDialog supports `loading`
       />
       <MovieCard

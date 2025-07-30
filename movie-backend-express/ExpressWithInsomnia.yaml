@@ -148,7 +148,7 @@ collection:
     meta:
       id: fld_ef28fc7a3cae44edbe26e2ae887ad156
       created: 1749718322137
-      modified: 1749718322137
+      modified: 1753777504426
       sortKey: -1749718322137
       description: ""
     children:
@@ -157,7 +157,7 @@ collection:
         meta:
           id: req_1fff4a129bf64d80b0fdfd3b328a785c
           created: 1749718326680
-          modified: 1749798125570
+          modified: 1753219053073
           isPrivate: false
           description: ""
           sortKey: -1749718363092
@@ -165,6 +165,13 @@ collection:
         headers:
           - name: User-Agent
             value: insomnia/11.2.0
+            id: pair_1526a6ebad0e41c7a5ce6650ccac00e8
+          - id: pair_0dd7237dd70c4d4e979e21c5fd8570d5
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -272,12 +279,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{url}}movies/684a964b5749dd65e7b2999"
+      - url: "{{url}}movies/68863161fcb6495530c47e21"
         name: updateMovieById
         meta:
           id: req_02cac6ed3ac04413a385c7b19ed63459
           created: 1749797982643
-          modified: 1749831249990
+          modified: 1753673739976
           isPrivate: false
           description: ""
           sortKey: -1749797982643
@@ -286,7 +293,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-            			"title": "Inception 4",
+            			"title": "",
             			"director": {
             				"name": "Christopher Nolan",
             				"phoneNo": "123-456-7890",
@@ -331,7 +338,7 @@ collection:
     meta:
       id: fld_07087df13a2c4b1aa37c43af2836bede
       created: 1749831406048
-      modified: 1749881827538
+      modified: 1753777495838
       sortKey: -1749831406048
       description: ""
     children:
@@ -340,7 +347,7 @@ collection:
         meta:
           id: req_f5a198206b234aba9f2ce35aaa2e1aed
           created: 1749831411934
-          modified: 1749831431465
+          modified: 1753202610443
           isPrivate: false
           description: ""
           sortKey: -1749831411934
@@ -348,6 +355,13 @@ collection:
         headers:
           - name: User-Agent
             value: insomnia/11.2.0
+            id: pair_87a42cc663034be093b77363b9aec3be
+          - id: pair_4fd5fff8fc85461bacaf0bc15f74832d
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -409,12 +423,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: "{{url}}reviews/movie/687885f215ec25f3f1814907"
+      - url: "{{url}}reviews/movie/6878a89b69640473cd36792b"
         name: getReviewByMovieId
         meta:
           id: req_274ab16da46546d89f120beb03cc4fe9
           created: 1749881896242
-          modified: 1752940186194
+          modified: 1753202625252
           isPrivate: false
           description: ""
           sortKey: -1749881896242
@@ -422,6 +436,13 @@ collection:
         headers:
           - name: User-Agent
             value: insomnia/11.2.0
+            id: pair_8780851d4dc8441a86c600674b909ccf
+          - id: pair_f4f59272167c4a8a840c3a9ba02387c8
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -487,7 +508,7 @@ collection:
     meta:
       id: fld_959f626ea8e04387a5c0fa2672fcceb2
       created: 1753127021922
-      modified: 1753130762679
+      modified: 1753777510558
       sortKey: -1753127021922
       description: ""
     children:
@@ -564,6 +585,42 @@ collection:
         headers:
           - name: User-Agent
             value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: token_verify
+    meta:
+      id: fld_cadf0332996f4e43bfe88836278b9424
+      created: 1753817450631
+      modified: 1753817679093
+      sortKey: -1753817450631
+      description: ""
+    children:
+      - url: "{{url}}verify/tokenVerify"
+        name: tokenVerify
+        meta:
+          id: req_03bf145e581d4c1ead39924a2bcf71c2
+          created: 1753817683370
+          modified: 1753817810740
+          isPrivate: false
+          description: ""
+          sortKey: -1753817683370
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_e2282faef9c14b2e9ebe17e7d34fa602
+          - id: pair_5ce05442a3ad415c8782458a461ba225
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
         settings:
           renderRequestBody: true
           encodeUrl: true

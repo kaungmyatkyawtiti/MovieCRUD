@@ -48,7 +48,9 @@ const CenteredMessage = ({
     minHeight="200px"
     sx={{ px: 2, textAlign: 'center' }}
   >
-    <Typography color={color}>{children}</Typography>
+    <Typography color={color}>
+      {children}
+    </Typography>
   </Box>
 );
 

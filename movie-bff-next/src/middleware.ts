@@ -17,10 +17,10 @@ export async function middleware(request: NextRequest) {
 
   if (!authToken?.value) {
     const redirectUrl = new URL('/login', request.url)
-    await cookieStore.set("redirectUrl", url.pathname);
+    cookieStore.set("redirectUrl", url.pathname);
     return NextResponse.redirect(redirectUrl);
-
   }
+
   try {
     const resp = await axiosInstance.post('/api/verify/tokenVerify');
     const tokenResponse = resp.data;

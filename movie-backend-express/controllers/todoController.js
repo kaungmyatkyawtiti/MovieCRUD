@@ -38,7 +38,7 @@ const getAllTodos = handleAsync(async (req, res, next) => {
 
   const todos = await todoService.getAllTodos();
 
-  //  console.log("todos ", todos);
+  // log("todos ", todos);
   // todos is empty or not
   if (validateEmptyOrNotFound(todos, res, "No todos found")) return;
 

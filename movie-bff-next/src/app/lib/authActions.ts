@@ -5,6 +5,7 @@ import { loginUser } from "../api/authApi";
 import { loginSchema } from "../schema/loginSchema";
 import { redirect } from "next/navigation";
 import { logError } from "../utils/logger";
+import { log } from "console";
 
 interface State {
   errors?: {
@@ -47,7 +48,7 @@ export async function loginUserAction(
   let redirectUrl = "";
   try {
     const result = await loginUser(userCredentials);
-
+    log("result => ", result);
     if (result.token) {
       const cookieStore = await cookies();
 

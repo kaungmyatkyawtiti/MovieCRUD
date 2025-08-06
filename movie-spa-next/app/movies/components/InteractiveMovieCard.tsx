@@ -7,6 +7,7 @@ import { useState } from "react";
 import ConfirmationDialog from "./ConfirmationDialog";
 import MovieCard from "./MovieCard";
 import { useDeleteMovieByIdMutation } from "@/lib/features/movie/moviesApiSlice";
+import { log } from "@/app/utils/logger";
 
 interface InteractiveMovieCardProps {
   movie: Movie;
@@ -47,15 +48,15 @@ export default function InteractiveMovieCard({ movie }: InteractiveMovieCardProp
 
   const handleDeleteConfirm = (id: string) => {
     deleteMovie(id)
-      .then(data => console.log("successfully deleted", data));
+      .then(data => log("successfully deleted", data));
   };
 
   const handleDeleteDecline = () => {
-    console.log("decline");
+    log("decline");
   }
 
   const handleDetailClick = (movie: Movie) => {
-    console.log("click");
+    log("click");
     router.push(`/movies/${movie._id}`);
   }
 

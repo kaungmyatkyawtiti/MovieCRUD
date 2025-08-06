@@ -1,4 +1,5 @@
-export const logEnabled = process.env.LOG_ENABLED;
+export const logEnabled = process.env.NEXT_PUBLIC_LOG_ENABLED === "true";
+// console.log("logEnabled", logEnabled);
 
 export function log(...args: unknown[]): void {
   if (logEnabled) {

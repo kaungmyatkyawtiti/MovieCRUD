@@ -1,6 +1,5 @@
 'use client';
 
-import { useGetAllMoviesQuery } from "@/lib/features/movie/moviesApiSlice";
 import { useParams, useRouter } from "next/navigation";
 import MovieCard from "../components/MovieCard";
 import { Box, Button, IconButton, Typography } from "@mui/material";
@@ -9,17 +8,13 @@ import {
   ArrowBack as ArrowBackIcon
 } from "@mui/icons-material";
 import { useState } from "react";
+import { useGetMovieById } from "@/app/hooks/movieHook";
 
 export default function MovieDetailPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
 
-  const { movie } = useGetAllMoviesQuery(undefined, {
-    refetchOnMountOrArgChange: false,
-    selectFromResult: ({ data }) => ({
-      movie: data?.find(item => item._id === id),
-    })
-  })
+  const movie = useGetMovieById(id);
 
   const [open, setOpen] = useState(false);
 
@@ -89,4 +84,3 @@ export default function MovieDetailPage() {
     </Box>
   )
 }
-

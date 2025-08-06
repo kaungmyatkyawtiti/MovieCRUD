@@ -3,7 +3,7 @@
 import { Box, Stack, Typography, } from "@mui/material";
 import Loading from "@/app/loading";
 import MovieList from "./components/MovieList";
-import { useMovies } from "../hooks/movieHook";
+import { useGetAllMovies } from "../hooks/movieHook";
 
 type CenteredMessageProps = {
   children: React.ReactNode;
@@ -28,7 +28,7 @@ const CenteredMessage = ({
 );
 
 export default function MoviePage() {
-  const { data, isSuccess, isError, isPending } = useMovies();
+  const { data, isSuccess, isError, isPending } = useGetAllMovies();
 
   return (
     <Box p={3}>

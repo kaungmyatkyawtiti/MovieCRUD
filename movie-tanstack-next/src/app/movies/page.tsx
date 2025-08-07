@@ -4,6 +4,7 @@ import { Box, Stack, Typography, } from "@mui/material";
 import Loading from "@/app/loading";
 import MovieList from "./components/MovieList";
 import { useGetAllMovies } from "../hooks/movieHook";
+import MovieEntry from "./components/MovieEntry";
 
 type CenteredMessageProps = {
   children: React.ReactNode;
@@ -60,7 +61,7 @@ export default function MoviePage() {
 
       <Box sx={{ p: 3 }}>
 
-        {/* <MovieEntry /> */}
+        <MovieEntry />
 
         {
           isPending && <Loading />

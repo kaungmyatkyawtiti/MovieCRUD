@@ -9,13 +9,16 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useGetMovieById } from "@/app/hooks/movieHook";
+import MovieFormDialog from "../components/MovieFormDialog";
+import { log } from "@/utils/logger";
 
 export default function MovieDetailPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
 
-  const movie = useGetMovieById(id);
+  // const movie = useGetMovieById(id);
 
+  const movie = useGetMovieById(id);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -27,12 +30,12 @@ export default function MovieDetailPage() {
   };
 
   const editHandler = () => {
-    console.log("edit");
+    log("edit");
     handleClickOpen();
   }
 
   const backHandler = () => {
-    console.log("back");
+    log("back");
     router.back();
   }
 
@@ -75,11 +78,11 @@ export default function MovieDetailPage() {
 
           {/* <ReviewBox id={id} /> */}
         </Box>
-        {/* <MovieFormDialog */}
-        {/*   open={open} */}
-        {/*   onClose={handleClose} */}
-        {/*   movieToEdit={movie} */}
-        {/* /> */}
+        <MovieFormDialog
+          open={open}
+          onClose={handleClose}
+          movieToEdit={movie}
+        />
       </Box>
     </Box>
   )

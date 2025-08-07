@@ -104,6 +104,7 @@ const searchMovieByYear = handleAsync(async (req, res) => {
 });
 
 const saveMovie = handleAsync(async (req, res) => {
+  await waitFor(5000);
   const movie = req.body;
   // log("movie", movie);
   //  if (validateEmptyOrNotFound(movie, res, "no movie to save")) return;

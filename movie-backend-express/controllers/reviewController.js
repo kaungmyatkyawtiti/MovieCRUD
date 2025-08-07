@@ -75,6 +75,7 @@ const getReviewByMovieId = handleAsync(async (req, res, next) => {
 });
 
 const saveReview = handleAsync(async (req, res, nextx) => {
+  await waitFor(5000);
   const review = req.body;
 
   if (validateEmptyOrNotFound(review, res, "no review found to save")) return;

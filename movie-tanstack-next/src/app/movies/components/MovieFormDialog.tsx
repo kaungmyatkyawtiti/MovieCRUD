@@ -82,9 +82,7 @@ export default function MovieFormDialog({
           setLoading(false);
         },
       });
-      log("create")
     } else {
-      log("update");
       const updated: Movie = {
         _id: movieToEdit._id,
         title: data.title,
@@ -107,12 +105,8 @@ export default function MovieFormDialog({
   return (
     <Dialog
       open={open}
-      // onClose={onClose}
       onClose={(event, reason) => {
-        if (loading) return; // prevent close during loading
-        if (reason === "backdropClick" || reason === "escapeKeyDown") {
-          onClose(); // allow only if not loading
-        }
+        if (!loading) onClose();
       }}
       scroll="paper"
       disableEscapeKeyDown={loading}
@@ -155,6 +149,7 @@ export default function MovieFormDialog({
                 disabled={loading}
               />
             </Grid>
+
             <Grid size={12}>
               <TextField
                 margin="dense"
@@ -167,6 +162,7 @@ export default function MovieFormDialog({
                 disabled={loading}
               />
             </Grid>
+
             <Grid size={12}>
               <TextField
                 margin="dense"
@@ -194,7 +190,9 @@ export default function MovieFormDialog({
             </Grid>
           </Grid>
           <DialogActions>
-            <Button onClick={onClose} disabled={loading}>Cancel</Button>
+            <Button onClick={onClose} disabled={loading}>
+              Cancel
+            </Button>
             <Button type="submit" disabled={loading}>
               {
                 loading
@@ -202,8 +200,6 @@ export default function MovieFormDialog({
                   : "Save"
               }
             </Button>
-            {/* <Button onClick={onClose}>Cancel</Button> */}
-            {/* <Button type="submit">Save</Button> */}
           </DialogActions>
         </form>
       </DialogContent>

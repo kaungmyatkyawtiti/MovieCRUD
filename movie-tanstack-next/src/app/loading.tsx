@@ -10,7 +10,7 @@ export default function Loading() {
         justifyContent: 'center',
       }}
     >
-      <CircularProgress size={80} />
+      <CircularProgress size={65} />
     </Box>
   );
 }

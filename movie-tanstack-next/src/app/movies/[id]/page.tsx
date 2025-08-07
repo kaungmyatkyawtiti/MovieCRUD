@@ -11,14 +11,14 @@ import { useState } from "react";
 import { useGetMovieById } from "@/app/hooks/movieHook";
 import MovieFormDialog from "../components/MovieFormDialog";
 import { log } from "@/utils/logger";
+import ReviewBox from "../components/ReviewBox";
 
 export default function MovieDetailPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
 
-  // const movie = useGetMovieById(id);
-
   const movie = useGetMovieById(id);
+
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -76,7 +76,7 @@ export default function MovieDetailPage() {
             Edit
           </Button>
 
-          {/* <ReviewBox id={id} /> */}
+          <ReviewBox id={id} />
         </Box>
         <MovieFormDialog
           open={open}

@@ -86,9 +86,14 @@ export const moviesApiSlice = createApi({
         const patchResult = dispatch(
           moviesApiSlice.util.updateQueryData('getAllMovies', undefined, (draft) => {
 
-            const index = draft.findIndex(item => item._id === movie._id);
-            if (index !== -1) {
-              draft[index] = movie;
+            // const index = draft.findIndex(item => item._id === movie._id);
+            // if (index !== -1) {
+            //   draft[index] = movie;
+            // }
+
+            const target = draft.find(item => item._id === movie._id);
+            if (target) {
+              Object.assign(target, movie);
             }
 
             // draft = draft.map(item => item._id == movie._id ? movie : item);

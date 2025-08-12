@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
-import axiosInstance from "./app/axiosInstance";
 import { log, logError } from './app/utils/logger';
+import { cookies } from 'next/headers';
+import axiosInstance from './app/axiosInstance';
 
 export async function middleware(request: NextRequest) {
   log('Middleware request url', request.url);

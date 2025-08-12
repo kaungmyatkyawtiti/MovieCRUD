@@ -1,8 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiDeleteReviewById, apiGetReviewByMovieId, apiSaveReview, NewReview } from "./api/reviewApi";
+import { apiDeleteReviewById, apiGetReviewByMovieId, apiSaveReview } from "./api/reviewApi";
 import { log, logError } from "@/utils/logger";
 import { queryClient } from "./queryClient";
-import { Review } from "@/types/review";
+import { NewReview, Review } from "@/types/review";
 
 export const useGetReviewByMovieId = (movieId: string) => {
   return useQuery({

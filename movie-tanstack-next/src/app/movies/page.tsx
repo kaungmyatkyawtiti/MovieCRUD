@@ -37,6 +37,7 @@ const CenteredMessage = ({ children, color }: CenteredMessageProps) => (
 
 export default function MoviePage() {
   const { data, isSuccess, isError, isPending, refetch } = useGetAllMovies();
+
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const refreshHandler = async () => {
@@ -44,7 +45,9 @@ export default function MoviePage() {
 
     setIsRefreshing(true);
 
-    const delay = new Promise((resolve) => setTimeout(resolve, 3000));
+    const delay = new Promise((resolve, reject) =>
+      setTimeout(resolve, 3000)
+    );
 
     await Promise.all([refetch(), delay]);
 

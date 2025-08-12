@@ -15,10 +15,9 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { useForm } from "react-hook-form";
 import { InferType } from "yup";
 import { useMemo, useState } from "react";
-import { Movie } from "@/types/movie";
+import { Movie, NewMovie } from "@/types/movie";
 import { log } from "@/utils/logger";
 import { useMutationSaveMovie, useMutationUpdateMovieById } from "@/app/hooks/movieHook";
-import { NewMovie } from "@/app/hooks/api/movieApi";
 
 interface MovieFormDialogProps {
   open: boolean;

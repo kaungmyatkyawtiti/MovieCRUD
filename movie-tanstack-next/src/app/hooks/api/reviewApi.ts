@@ -1,8 +1,6 @@
 import axiosInstance from "@/app/axiosInstance";
-import { Review } from "@/types/review";
+import { NewReview, Review } from "@/types/review";
 import { AxiosResponse } from "axios";
-
-export type NewReview = Omit<Review, "_id">;
 
 export async function apiGetReviewByMovieId(movieId: string): Promise<Review[]> {
   const { data } = await axiosInstance.get<AxiosResponse<Review[]>>(`/api/reviews/movie/${movieId}`);

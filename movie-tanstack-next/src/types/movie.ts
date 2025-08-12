@@ -10,3 +10,9 @@ export interface Movie {
   director: Director;
   year: number;
 }
+
+type NewDirector = Omit<Director, "_id">;
+export type NewMovie = Omit<Movie, "_id" | "director"> & {
+  director: NewDirector
+};
+

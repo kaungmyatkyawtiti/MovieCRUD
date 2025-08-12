@@ -1,11 +1,6 @@
 import axiosInstance from "@/app/axiosInstance";
-import { Director, Movie } from "@/types/movie";
+import { Movie, NewMovie } from "@/types/movie";
 import { AxiosResponse } from "axios";
-
-type NewDirector = Omit<Director, "_id">;
-export type NewMovie = Omit<Movie, "_id" | "director"> & {
-  director: NewDirector
-};
 
 export async function apiGetAllMovies(): Promise<Movie[]> {
   const { data } = await axiosInstance.get<AxiosResponse<Movie[]>>("api/movies");

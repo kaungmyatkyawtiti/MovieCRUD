@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { apiDeleteMovieById, apiGetAllMovies, apiSaveMovie, apiUpdateMovieById, NewMovie } from "./api/movieApi"
+import { apiDeleteMovieById, apiGetAllMovies, apiSaveMovie, apiUpdateMovieById } from "./api/movieApi"
 import { queryClient } from "./queryClient";
-import { Movie } from "@/types/movie";
+import { Movie, NewMovie } from "@/types/movie";
 import { log, logError } from "@/utils/logger";
 
 export const useGetAllMovies = () => {

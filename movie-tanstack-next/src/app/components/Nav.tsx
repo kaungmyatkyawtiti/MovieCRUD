@@ -11,7 +11,7 @@ export const Nav = () => {
       { label: "Home", href: "/" },
       { label: "Movies", href: "/movies" },
       // { label: "Logout", href: "/logout" },
-      // { label: "Login", href: "/login" },
+      { label: "Login", href: "/login" },
     ]
 
   return (

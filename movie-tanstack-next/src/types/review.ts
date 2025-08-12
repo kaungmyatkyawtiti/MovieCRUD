@@ -4,3 +4,5 @@ export interface Review {
   rating: number;
   review: string;
 }
+
+export type NewReview = Omit<Review, "_id">;

@@ -52,7 +52,7 @@ const movieSchema = z.object({
   }),
   year: z
     .coerce
-    .number({ message: "year must be a number" })
+    .number<number>({ message: "year must be a number" })
     .positive({ message: "year must be positive number" })
     .int({ message: "year must be an integer" })
     .min(1800, { message: "year must be at least 1800" })
@@ -100,7 +100,7 @@ export default function MovieFormDialog({
     reset,
     formState: { errors },
   } = useForm<MovieFormData>({
-    resolver: zodResolver(movieSchema) as Resolver<MovieFormData>,
+    resolver: zodResolver(movieSchema),
     defaultValues,
   })
 

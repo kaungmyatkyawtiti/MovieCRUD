@@ -4,8 +4,7 @@ import { cookies } from "next/headers";
 import { loginUser } from "../api/authApi";
 import { loginSchema } from "../schema/loginSchema";
 import { redirect } from "next/navigation";
-import { logError } from "../utils/logger";
-import { log } from "console";
+import { log, logError } from "../utils/logger";
 
 interface State {
   errors?: {

@@ -9,7 +9,7 @@ import {
   Link,
   Card,
 } from '@mui/material';
-import { Controller, Resolver, useForm } from "react-hook-form";
+import { Resolver, useForm } from "react-hook-form";
 import { useActionState, useEffect } from 'react';
 import { LoginFormValue, loginSchema } from '@/app/schema/loginSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,12 +19,11 @@ export default function SignIn() {
   const [state, submitAction, pending] = useActionState(loginUserAction, undefined);
 
   const {
-    control,
     register,
     reset,
     handleSubmit,
   } = useForm<LoginFormValue>({
-    resolver: zodResolver(loginSchema) as Resolver<LoginFormValue>,
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -50,42 +49,30 @@ export default function SignIn() {
               flexDirection: 'column',
             }}
           >
-            <Controller
-              name="username"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Username"
-                  type="text"
-                  autoComplete="username" // ✅ add this
-                  variant="outlined"
+            <TextField
+              {...register("username")}
+              label="Username"
+              type="text"
+              autoComplete="username" // ✅ add this
+              variant="outlined"
 
-                  error={!!state?.errors?.username}
-                  helperText={state?.errors?.username}
-                  fullWidth
-                  margin="normal"
-                />
-              )}
+              error={!!state?.errors?.username}
+              helperText={state?.errors?.username}
+              fullWidth
+              margin="normal"
             />
 
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Password"
-                  type="password"
-                  autoComplete="current-password" // ✅ add this
-                  variant="outlined"
+            <TextField
+              {...register("password")}
+              label="Password"
+              type="password"
+              autoComplete="current-password" // ✅ add this
+              variant="outlined"
 
-                  error={!!state?.errors?.password}
-                  helperText={state?.errors?.password}
-                  fullWidth
-                  margin="normal"
-                />
-              )}
+              error={!!state?.errors?.password}
+              helperText={state?.errors?.password}
+              fullWidth
+              margin="normal"
             />
 
             {/* <FormControlLabel */}

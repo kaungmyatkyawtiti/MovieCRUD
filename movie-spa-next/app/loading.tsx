@@ -7,7 +7,7 @@ export default function Loading() {
   return (
     <Box
       sx={{
-        height: '100vh', // full viewport height
+        height: '50vh', // full viewport height
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

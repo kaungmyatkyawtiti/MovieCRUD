@@ -11,11 +11,13 @@ import {
 
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Resolver, useForm } from "react-hook-form";
 import { InferType } from "yup";
 import { NewMovie, useSaveMovieMutation, useUpdateMovieByIdMutation } from "@/lib/features/movie/moviesApiSlice";
 import { Movie } from "../types/movies";
 import { useMemo } from "react";
+import z from 'zod';
 
 interface MovieFormDialogProps {
   open: boolean;
@@ -23,23 +25,41 @@ interface MovieFormDialogProps {
   movieToEdit?: Movie;
 }
 
-const movieSchema = yup
-  .object({
-    title: yup.string().required("movie title is required"),
-    director: yup.object({
-      name: yup.string().required("director name is required"),
-      phoneNo: yup.string().required("director phoneNo is required")
-    }),
-    year: yup
-      .number()
-      .typeError("year must be number")
-      .positive("year must be positive number")
-      .integer("year must be integer")
-      .required("movie release year is required"),
-  })
-  .required()
+// with yup
+// const movieSchema = yup
+//   .object({
+//     title: yup.string().required("movie title is required"),
+//     director: yup.object({
+//       name: yup.string().required("director name is required"),
+//       phoneNo: yup.string().required("director phoneNo is required")
+//     }),
+//     year: yup
+//       .number()
+//       .typeError("year must be number")
+//       .positive("year must be positive number")
+//       .integer("year must be integer")
+//       .required("movie release year is required"),
+//   })
+//   .required()
+//
+// type MovieFormData = InferType<typeof movieSchema>
 
-type MovieFormData = InferType<typeof movieSchema>
+const movieSchema = z.object({
+  title: z.string().min(1, { message: "movie title is required" }),
+  director: z.object({
+    name: z.string().min(1, { message: "director name is required" }),
+    phoneNo: z.string().min(1, { message: "director phoneNo is required" }),
+  }),
+  year: z
+    .coerce
+    .number({ message: "year must be a number" })
+    .positive({ message: "year must be positive number" })
+    .int({ message: "year must be an integer" })
+    .min(1800, { message: "year must be at least 1800" })
+  // .max(new Date().getFullYear() + 5, { message: "year is too far in the future" }),
+});
+
+type MovieFormData = z.infer<typeof movieSchema>;
 
 export default function MovieFormDialog({
   open,
@@ -55,8 +75,23 @@ export default function MovieFormDialog({
   //   defaultValues = { ...movieToEdit };
   // }
 
+  // const defaultValues = useMemo(() => {
+  //   return movieToEdit ? { ...movieToEdit } : {};
+  // }, [movieToEdit]);
+
   const defaultValues = useMemo(() => {
-    return movieToEdit ? { ...movieToEdit } : {};
+    return movieToEdit
+      ? {
+        ...movieToEdit,
+      }
+      : {
+        title: "",
+        director: {
+          name: "",
+          phoneNo: "",
+        },
+        year: undefined,
+      };
   }, [movieToEdit]);
 
   const {
@@ -65,8 +100,8 @@ export default function MovieFormDialog({
     reset,
     formState: { errors },
   } = useForm<MovieFormData>({
+    resolver: zodResolver(movieSchema) as Resolver<MovieFormData>,
     defaultValues,
-    resolver: yupResolver(movieSchema),
   })
 
   const onSubmit = (data: MovieFormData) => {
@@ -75,6 +110,7 @@ export default function MovieFormDialog({
     if (!movieToEdit) {
       saveMovie(newMovie);
       reset();
+      onClose();
     } else {
       const updated: Movie = {
         _id: movieToEdit._id,
@@ -87,8 +123,8 @@ export default function MovieFormDialog({
         },
       }
       updateMovie(updated);
+      onClose();
     }
-    onClose();
   }
 
   return (
@@ -169,7 +205,6 @@ export default function MovieFormDialog({
               />
             </Grid>
           </Grid>
-          {/* <p>{errors.firstName?.message}</p> */}
           <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
             <Button type="submit">Save</Button>

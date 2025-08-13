@@ -50,10 +50,10 @@ export default function SignIn() {
   }, []);
 
   const {
-    control,
-    // register,
+    register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(userSchema),
@@ -79,7 +79,18 @@ export default function SignIn() {
         },
         error => {
           console.log("error", error);
-          reset();
+          setError("username", {
+            type: "server",
+            message: "Invalid username or password",
+          });
+          setError("password", {
+            type: "server",
+            message: "Invalid username or password",
+          });
+          reset(
+            { username: "", password: "" },
+            { keepErrors: true }
+          );
         }
       )
   };
@@ -103,42 +114,30 @@ export default function SignIn() {
               flexDirection: 'column',
             }}
           >
-            <Controller
-              name="username"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Username"
-                  type="text"
-                  variant="outlined"
+            <TextField
 
-                  error={!!errors.username}
-                  helperText={errors.username?.message}
-                  fullWidth
-                  margin="normal"
-                />
-              )}
+              {...register("username")}
+              label="Username"
+              type="text"
+              variant="outlined"
+
+              error={!!errors.username}
+              helperText={errors.username?.message}
+              fullWidth
+              margin="normal"
             />
 
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Password"
-                  type="password"
-                  variant="outlined"
+            <TextField
+              {...register("password")}
+              label="Password"
+              type="password"
+              variant="outlined"
 
-                  error={!!errors.password}
-                  helperText={errors.password?.message}
-                  fullWidth
-                  margin="normal"
-                />
-              )}
+              error={!!errors.password}
+              helperText={errors.password?.message}
+              fullWidth
+              margin="normal"
             />
-
             {/* <FormControlLabel */}
             {/*   control={<Checkbox value="remember" color="primary" />} */}
             {/*   label="I agree to the terms and conditions" */}

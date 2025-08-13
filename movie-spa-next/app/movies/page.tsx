@@ -9,6 +9,7 @@ import Loading from "@/app/loading";
 import IsAuth from "@/app/auth/IsAuth";
 import MovieList from "./components/MovieList";
 import MovieEntry from "./components/MovieEntry";
+import { useState } from 'react';
 
 // let movies: Movie[] = [
 //   {
@@ -61,11 +62,29 @@ function MoviePage() {
   //   skipPollingIfUnfocused: true,
   // });
 
-  const refreshHandler = () => {
+  // const refreshHandler = () => {
+  //   console.log("refresh");
+  //   refetch();
+  // }
+  // console.log("data", data);
+
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const refreshHandler = async () => {
     console.log("refresh");
-    refetch();
-  }
-  console.log("data", data);
+
+    setIsRefreshing(true);
+
+    const delay = new Promise((resolve, reject) =>
+      setTimeout(resolve, 3000)
+    );
+
+    await Promise.all([refetch(), delay]);
+
+    setIsRefreshing(false);
+  };
+
+  const isSpinning = isLoading || isRefreshing;
 
   return (
     <Box p={3}>
@@ -77,7 +96,7 @@ function MoviePage() {
           variant="outlined"
           size="small"
           startIcon={
-            isFetching
+            isRefreshing
               ? <CircularProgress size={16} color="inherit" />
               : <RefreshIcon />
           }
@@ -87,11 +106,7 @@ function MoviePage() {
             fontWeight: 500,
           }}
         >
-          {
-            isFetching
-              ? 'Refreshing...'
-              : 'Refresh'
-          }
+          Refresh
         </Button>
       </Stack>
 
@@ -101,35 +116,35 @@ function MoviePage() {
         <MovieEntry />
 
         {
-          isLoading && <Loading />
+          isSpinning && <Loading />
         }
 
         {
-          isError &&
-          <CenteredMessage color="error">
+          isError && isSpinning &&
+          < CenteredMessage color="error">
             Error loading movies. Please try again.
           </CenteredMessage>
         }
 
         {
-          isSuccess && data?.length === 0 &&
-          <CenteredMessage color="text.secondary">No movies found.</CenteredMessage>
-        }
-
-        {
-          isSuccess && data?.length > 0 &&
-          <Stack
-            direction="row"
-            spacing={2}
-            useFlexGap
-            flexWrap="wrap"
-            justifyContent="center"
-          >
-            <MovieList movies={data} />
-          </Stack>
+          isSuccess && !isRefreshing && (
+            data?.length === 0
+              ? <CenteredMessage color="text.secondary">No movies found.</CenteredMessage>
+              : (
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  useFlexGap
+                  flexWrap="wrap"
+                  justifyContent="center"
+                >
+                  <MovieList movies={data} />
+                </Stack>
+              )
+          )
         }
       </Box>
-    </Box>
+    </Box >
   )
 }
 

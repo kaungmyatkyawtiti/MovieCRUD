@@ -1,0 +1,646 @@
+type: collection.insomnia.rest/5.0
+name: React_10th_Batch
+meta:
+  id: wrk_211deb229be74478acd14de8c654e6ca
+  created: 1747804557007
+  modified: 1749228567476
+  description: ""
+collection:
+  - name: todos
+    meta:
+      id: fld_58746e53056e4e319533a020b48fc64e
+      created: 1749715728566
+      modified: 1749887566580
+      sortKey: -1749715728566
+      description: ""
+    children:
+      - url: "{{url}}todos"
+        name: saveTodo
+        meta:
+          id: req_6445fde1d4c24b2a839b8789e8e4703e
+          created: 1749715732555
+          modified: 1752470053635
+          isPrivate: false
+          description: ""
+          sortKey: -1749715732555
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"title": "todo ",
+            	"completed": true
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_4ebdaf68bbb0491781d23da9b149a869
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}todos"
+        name: getAllTodos
+        meta:
+          id: req_3a1f82b7b9c042bb9d9304fb7ecc174c
+          created: 1749886484535
+          modified: 1753130159504
+          isPrivate: false
+          description: ""
+          sortKey: -1749886484535
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_1e5fdaea39334e7c8b70c145516fae67
+          - id: pair_b8813047c2af45adbd4bdeb6c37f5e63
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}todos/684d25e06e6b1e7d970456a0"
+        name: getTodoById
+        meta:
+          id: req_9d7557240a35453781e353a58eabc02b
+          created: 1749886541405
+          modified: 1749887265365
+          isPrivate: false
+          description: ""
+          sortKey: -1749886541405
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}todos/684d25e06e6b1e7d970456a1"
+        name: updateTodoById
+        meta:
+          id: req_2b02ba2ec7d0439ea60ed16d3ca3e3a7
+          created: 1749887273066
+          modified: 1749887355824
+          isPrivate: false
+          description: ""
+          sortKey: -1749887273066
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            			"title": "todo 1 updated",
+            			"completed": false
+            		}
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_069e4b9063f84c32b89af80c2564c7db
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}todos/684d2a49a985095cf73dfe3"
+        name: deleteTodoById
+        meta:
+          id: req_c912331a7a0645b69b8453117702e3ed
+          created: 1749887568474
+          modified: 1749887613337
+          isPrivate: false
+          description: ""
+          sortKey: -1749887568474
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: movies
+    meta:
+      id: fld_ef28fc7a3cae44edbe26e2ae887ad156
+      created: 1749718322137
+      modified: 1753777504426
+      sortKey: -1749718322137
+      description: ""
+    children:
+      - url: "{{url}}movies"
+        name: getAllMovies
+        meta:
+          id: req_1fff4a129bf64d80b0fdfd3b328a785c
+          created: 1749718326680
+          modified: 1753219053073
+          isPrivate: false
+          description: ""
+          sortKey: -1749718363092
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_1526a6ebad0e41c7a5ce6650ccac00e8
+          - id: pair_0dd7237dd70c4d4e979e21c5fd8570d5
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}movies"
+        name: saveMovie
+        meta:
+          id: req_38836aca7af242bd92c94fa490ac5ac5
+          created: 1749718360170
+          modified: 1752729377832
+          isPrivate: false
+          description: ""
+          sortKey: -1749718362992
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            			"title": "Another 2",
+            			"director": {
+            				"name": "I Don't Know",
+            				"phoneNo": "123-456-7890",
+            				"_id": "684b1fd39bf638816f8e959e"
+            			},
+            			"year": 2030
+            		}
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_b9f0e4cf22754da3a7fe89504a3372cb
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}movies/title/in ihie"
+        name: getMovieByTitle
+        meta:
+          id: req_17ae653a8cfc4dc98d9eb47453bd54b9
+          created: 1749753926152
+          modified: 1749798120302
+          isPrivate: false
+          description: ""
+          sortKey: -1749753926152
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}movies/year/2020"
+        name: getMovieByYear
+        meta:
+          id: req_b1d764f7a6354887add1a32f817c7d9b
+          created: 1749793961453
+          modified: 1749798114773
+          isPrivate: false
+          description: ""
+          sortKey: -1749793961453
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}movies/684a964b5749dd65e7b29990"
+        name: getMovieById
+        meta:
+          id: req_2a34036f9ba44f9a9d7dae39fa312523
+          created: 1749794700032
+          modified: 1752940757251
+          isPrivate: false
+          description: ""
+          sortKey: -1749794700032
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}movies/68863161fcb6495530c47e21"
+        name: updateMovieById
+        meta:
+          id: req_02cac6ed3ac04413a385c7b19ed63459
+          created: 1749797982643
+          modified: 1753673739976
+          isPrivate: false
+          description: ""
+          sortKey: -1749797982643
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            			"title": "",
+            			"director": {
+            				"name": "Christopher Nolan",
+            				"phoneNo": "123-456-7890",
+            				"_id": "684bcd34b758682478c9a5d7"
+            			},
+            			"year": 2019
+            		}
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_1f832aa597dd495ba8376ce36da8abed
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}movies/684b1f1f143e7f9d9cb537c9"
+        name: deleteMovieById
+        meta:
+          id: req_ee18fd0f35844e8c8346bb4de7242cc5
+          created: 1749799454293
+          modified: 1749799550180
+          isPrivate: false
+          description: ""
+          sortKey: -1749799454293
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: reviews
+    meta:
+      id: fld_07087df13a2c4b1aa37c43af2836bede
+      created: 1749831406048
+      modified: 1753777495838
+      sortKey: -1749831406048
+      description: ""
+    children:
+      - url: "{{url}}reviews"
+        name: getAllReviews
+        meta:
+          id: req_f5a198206b234aba9f2ce35aaa2e1aed
+          created: 1749831411934
+          modified: 1753202610443
+          isPrivate: false
+          description: ""
+          sortKey: -1749831411934
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_87a42cc663034be093b77363b9aec3be
+          - id: pair_4fd5fff8fc85461bacaf0bc15f74832d
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}reviews"
+        name: saveReview
+        meta:
+          id: req_f221700f20ff4aaeba98774e5bb0ad00
+          created: 1749881713804
+          modified: 1752940899358
+          isPrivate: false
+          description: ""
+          sortKey: -1749881713805
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            			"movie": "684b1fd39bf638816f8e959d",
+            			"rating": 5,
+            			"review": "excellent movie"
+            		}
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_060e37aad5c84c74824ca986c6da20b8
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}reviews/684d13c2286a4703d4e0cfab"
+        name: getReviewById
+        meta:
+          id: req_de4a4fb3b91a4c1abfba990cc66ccd79
+          created: 1749881824415
+          modified: 1749881886124
+          isPrivate: false
+          description: ""
+          sortKey: -1749881824415
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}reviews/movie/6878a89b69640473cd36792b"
+        name: getReviewByMovieId
+        meta:
+          id: req_274ab16da46546d89f120beb03cc4fe9
+          created: 1749881896242
+          modified: 1753202625252
+          isPrivate: false
+          description: ""
+          sortKey: -1749881896242
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_8780851d4dc8441a86c600674b909ccf
+          - id: pair_f4f59272167c4a8a840c3a9ba02387c8
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}reviews/684d13c2286a4703d4e0cfac"
+        name: updateReviewById
+        meta:
+          id: req_ceacfdce3ea641419e612a5be131eca8
+          created: 1749884201548
+          modified: 1749885160180
+          isPrivate: false
+          description: ""
+          sortKey: -1749884201548
+        method: PUT
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            			"movie": "684a964b5749dd65e7b29990",
+            			"rating": 4.5,
+            			"review": "An emotionally gripping film with excellent performances another updated"
+            		}
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_e56c812915834801829fb655037d9fc0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}reviews/684d13c2286a4703d4e0cfac"
+        name: deleteReviewById
+        meta:
+          id: req_b5c25f2ae93c48f5b148847e1ee018e3
+          created: 1749885784678
+          modified: 1752940808770
+          isPrivate: false
+          description: ""
+          sortKey: -1749885784678
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: users
+    meta:
+      id: fld_959f626ea8e04387a5c0fa2672fcceb2
+      created: 1753127021922
+      modified: 1753777510558
+      sortKey: -1753127021922
+      description: ""
+    children:
+      - url: "{{url}}users/register"
+        name: registerUser
+        meta:
+          id: req_5b61caa85ef440b2bbf3afb744344292
+          created: 1753127039629
+          modified: 1753127549759
+          isPrivate: false
+          description: ""
+          sortKey: -1753127039629
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"username": "user",
+            	"password": "passwordd"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}users/login"
+        name: loginUser
+        meta:
+          id: req_9dd3d25d957346f4870aee743975bf80
+          created: 1753127077756
+          modified: 1753127535968
+          isPrivate: false
+          description: ""
+          sortKey: -1753127077756
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"username": "user",
+            	"password": "password"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{url}}users/687e9a0dd1ca1364ebd68f3b"
+        name: getUserById
+        meta:
+          id: req_4689a922c83744a3a79bf5f9f1287b7f
+          created: 1753130759504
+          modified: 1753131937060
+          isPrivate: false
+          description: ""
+          sortKey: -1753130759504
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: token_verify
+    meta:
+      id: fld_cadf0332996f4e43bfe88836278b9424
+      created: 1753817450631
+      modified: 1753817679093
+      sortKey: -1753817450631
+      description: ""
+    children:
+      - url: "{{url}}verify/tokenVerify"
+        name: tokenVerify
+        meta:
+          id: req_03bf145e581d4c1ead39924a2bcf71c2
+          created: 1753817683370
+          modified: 1753817810740
+          isPrivate: false
+          description: ""
+          sortKey: -1753817683370
+        method: POST
+        headers:
+          - name: User-Agent
+            value: insomnia/11.2.0
+            id: pair_e2282faef9c14b2e9ebe17e7d34fa602
+          - id: pair_5ce05442a3ad415c8782458a461ba225
+            name: Authorization
+            value: Bearer
+              eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4N2U5YTBkZDFjYTEzNjRlYmQ2OGYzYiIsImlhdCI6MTc1MzEzMDE0MH0.E6jNocLBeoIcBblIT4FXCB133zt4gJyTgsk_3GmGamI
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_6a4929f66645cdb5f67542651c87b4cf3525120d
+    created: 1749228567759
+    modified: 1749228567759
+environments:
+  name: my_env
+  meta:
+    id: env_6a4929f66645cdb5f67542651c87b4cf3525120d
+    created: 1747804557016
+    modified: 1752517075398
+    isPrivate: false
+  data:
+    url: http://localhost:8080/api/

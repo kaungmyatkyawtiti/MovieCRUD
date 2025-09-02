@@ -19,10 +19,12 @@ const saveReview = async ({ movie, rating, review }) => {
 const updateReviewById = async (reviewId, review) => {
   const updated = await Reviews.findByIdAndUpdate(
     reviewId,
+
     { ...review, movie: new mongoose.Types.ObjectId(review.movie) },
+
     { new: true }
   );
-  return updated.populate("movie");
+  return updated;
 };
 
 const deleteReviewById = async (reviewId) =>

@@ -16,7 +16,7 @@ import { Resolver, useForm } from "react-hook-form";
 import { InferType } from "yup";
 import { NewMovie, useSaveMovieMutation, useUpdateMovieByIdMutation } from "@/lib/features/movie/moviesApiSlice";
 import { Movie } from "../types/movies";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import z from 'zod';
 
 interface MovieFormDialogProps {
@@ -70,29 +70,14 @@ export default function MovieFormDialog({
 
   const [updateMovie, updateMovieResult] = useUpdateMovieByIdMutation();
 
-  // let defaultValues: any = {};
-  // if (movieToEdit) {
-  //   defaultValues = { ...movieToEdit };
-  // }
-
-  // const defaultValues = useMemo(() => {
-  //   return movieToEdit ? { ...movieToEdit } : {};
-  // }, [movieToEdit]);
-
-  const defaultValues = useMemo(() => {
-    return movieToEdit
-      ? {
-        ...movieToEdit,
-      }
-      : {
-        title: "",
-        director: {
-          name: "",
-          phoneNo: "",
-        },
-        year: undefined,
-      };
-  }, [movieToEdit]);
+  const defaultValues = useMemo(() => ({
+    title: "",
+    director: {
+      name: "",
+      phoneNo: ""
+    },
+    year: undefined,
+  }), []);
 
   const {
     register,
@@ -101,8 +86,27 @@ export default function MovieFormDialog({
     formState: { errors },
   } = useForm<MovieFormData>({
     resolver: zodResolver(movieSchema),
-    defaultValues,
+    defaultValues
   })
+
+  // useEffect(() => {
+  //   if (movieToEdit) {
+  //     reset(movieToEdit); // editing mode
+  //   } else {
+  //     reset({
+  //       title: "",
+  //       director: {
+  //         name: "",
+  //         phoneNo: ""
+  //       },
+  //       year: undefined
+  //     }); // new movie
+  //   }
+  // }, [movieToEdit, reset]);
+
+  useEffect(() => {
+    reset(movieToEdit ?? defaultValues);
+  }, [movieToEdit, reset, defaultValues]);
 
   const onSubmit = (data: MovieFormData) => {
     console.log(data);
@@ -142,14 +146,24 @@ export default function MovieFormDialog({
         },
       }}
     >
-      <DialogTitle>
+      <DialogTitle
+        variant="h5"
+        sx={{
+          textAlign: "center",
+          fontWeight: 500
+        }}
+      >
         {
           movieToEdit
             ? "Edit Movie"
             : "New Movie"
         }
       </DialogTitle>
-      <DialogContent sx={{ paddingBottom: 0 }}>
+      <DialogContent
+        sx={{
+          py: 1
+        }}
+      >
         <DialogContentText>
           {
             movieToEdit

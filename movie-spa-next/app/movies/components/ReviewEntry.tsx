@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material";
 
 import { useState } from "react"
-import ReviewDialog from "./ReviewDialog";
+import ReviewFormDialog from "./ReviewFormDialog";
 
 
 export default function ReviewEntry({ movieId }: { movieId: string }) {
@@ -46,7 +46,7 @@ export default function ReviewEntry({ movieId }: { movieId: string }) {
       >
         New Review
       </Button>
-      <ReviewDialog
+      <ReviewFormDialog
         open={open}
         onClose={handleClose}
         movieId={movieId}

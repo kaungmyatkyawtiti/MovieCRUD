@@ -31,7 +31,7 @@ export default function MovieEntry() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        mb: 3,
+        p: 4,
       }}
     >
       <Typography variant="h6" fontWeight={500}>

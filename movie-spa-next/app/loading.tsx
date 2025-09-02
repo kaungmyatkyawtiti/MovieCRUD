@@ -1,24 +1,18 @@
 'use client';
 
-import { Box } from "@mui/material";
-import { Audio } from "react-loader-spinner";
+import { Box, Typography } from '@mui/material';
 
 export default function Loading() {
   return (
     <Box
       sx={{
-        height: '50vh', // full viewport height
+        height: "60vh",
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
-      <Audio
-        height="100"
-        width="100"
-        color="green"
-        ariaLabel="loading"
-      />
+      <Typography variant='h4'>Changing page</Typography>
     </Box>
   );
 }

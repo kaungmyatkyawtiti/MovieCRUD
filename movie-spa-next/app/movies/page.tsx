@@ -5,11 +5,12 @@ import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material"
 import {
   Refresh as RefreshIcon
 } from "@mui/icons-material";
-import Loading from "@/app/loading";
 import IsAuth from "@/app/auth/IsAuth";
 import MovieList from "./components/MovieList";
 import MovieEntry from "./components/MovieEntry";
 import { useState } from 'react';
+import CustomLoading from '../components/CustomLoading';
+import { backIn } from "framer-motion";
 
 // let movies: Movie[] = [
 //   {
@@ -62,12 +63,6 @@ function MoviePage() {
   //   skipPollingIfUnfocused: true,
   // });
 
-  // const refreshHandler = () => {
-  //   console.log("refresh");
-  //   refetch();
-  // }
-  // console.log("data", data);
-
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   const refreshHandler = async () => {
@@ -88,8 +83,15 @@ function MoviePage() {
 
   return (
     <Box p={3}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h4" fontWeight="bold">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          my: 2
+        }}
+      >
+        <Typography variant="h4" fontWeight="600">
           🎬 My Movie Collections
         </Typography>
         <Button
@@ -110,18 +112,22 @@ function MoviePage() {
         </Button>
       </Stack>
 
-      <Box sx={{ p: 3 }}>
+      <Box
+        sx={{
+          my: 2
+        }}
+      >
 
         {/* New Movie From Section */}
         <MovieEntry />
 
         {
-          isSpinning && <Loading />
+          isSpinning && <CustomLoading height={"50vh"} />
         }
 
         {
           isError && isSpinning &&
-          < CenteredMessage color="error">
+          <CenteredMessage color="error">
             Error loading movies. Please try again.
           </CenteredMessage>
         }
@@ -135,8 +141,10 @@ function MoviePage() {
                   direction="row"
                   spacing={2}
                   useFlexGap
-                  flexWrap="wrap"
-                  justifyContent="center"
+                  sx={{
+                    flexWrap: "wrap",
+                    justifyContent: "center",
+                  }}
                 >
                   <MovieList movies={data} />
                 </Stack>

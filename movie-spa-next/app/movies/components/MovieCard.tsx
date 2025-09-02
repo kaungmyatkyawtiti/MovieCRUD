@@ -17,7 +17,7 @@ export default function MovieCard({
     <Box>
       <Card
         sx={{
-          width: onDetailClick ? 240 : '100%',
+          width: onDetailClick ? 260 : '100%',
         }}
       >
         {/* Make CardActionArea clickable for entire card except buttons */}

@@ -51,7 +51,7 @@ export const reviewsApiSlice = createApi({
           const { data: savedReview } = await queryFulfilled;
           dispatch(
             reviewsApiSlice.util.updateQueryData("getReviewByMovieId", savedReview.movie, (draft) => {
-              draft.push(savedReview);
+              draft.unshift(savedReview);
             }),
           );
           console.log("saved Review", savedReview);
@@ -60,6 +60,32 @@ export const reviewsApiSlice = createApi({
         }
       },
       transformResponse: (response: ApiResponse<Review>, meta, arg) => response.data,
+    }),
+
+    updateReviewById: build.mutation<Review, Review>({
+      query: (updateReview) => ({
+        url: `/reviews/${updateReview._id}`,
+        method: "PUT",
+        body: updateReview,
+      }),
+
+      async onQueryStarted(review: Review, { dispatch, queryFulfilled }) {
+        console.log('review to update', review);
+
+        const patchResult = dispatch(
+          reviewsApiSlice.util.updateQueryData('getReviewByMovieId', review.movie, (draft) => {
+            draft = draft.map(item => item._id == review._id ? review : item);
+            return draft;
+          }),
+        )
+        try {
+          const { data: updateReview } = await queryFulfilled
+          console.log('successfully update review', updateReview);
+        } catch (err) {
+          patchResult.undo();
+        }
+      },
+      transformResponse: (response: { data: Review }, meta, arg) => response.data,
     }),
 
     deleteReviewById: build.mutation<Review, Review>({
@@ -74,12 +100,8 @@ export const reviewsApiSlice = createApi({
         const patchResult = dispatch(
           reviewsApiSlice.util.updateQueryData('getReviewByMovieId', review.movie, (draft) => {
 
-            const index = draft.findIndex((item) => item._id === review._id);
-            if (index !== -1) {
-              draft.splice(index, 1);
-            }
-            // draft = draft.filter(item => item._id != reviewId);
-            // return draft;
+            draft = draft.filter(item => item._id != review._id);
+            return draft;
           }),
         );
         try {
@@ -99,5 +121,6 @@ export const {
   useGetAllReviewsQuery,
   useGetReviewByMovieIdQuery,
   useSaveReviewMutation,
+  useUpdateReviewByIdMutation,
   useDeleteReviewByIdMutation,
 } = reviewsApiSlice;

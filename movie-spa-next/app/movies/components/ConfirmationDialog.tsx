@@ -46,7 +46,13 @@ export default function ConfirmationDialog(props: ConfirmationDialogRawProps) {
     >
       <DialogTitle>
         <Box display="flex" alignItems="center" gap={1}>
-          <Typography variant="h5" sx={{ flexGrow: 1 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              flexGrow: 1,
+              fontWeight: 500
+            }}
+          >
             {title}
           </Typography>
           <HelpOutlineIcon fontSize="medium" sx={{ color: '#1976d2' }} />

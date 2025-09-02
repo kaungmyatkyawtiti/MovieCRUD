@@ -41,12 +41,12 @@ export const moviesApiSlice = createApi({
     }),
 
     getMovieById: build.query<Movie, string>({
-      query: (movieId: string) => `/movies/${movieId}`,
+      query: (movieId) => `/movies/${movieId}`,
       transformResponse: (response: ApiResponse<Movie>, meta, arg) => response.data,
     }),
 
     saveMovie: build.mutation<Movie, NewMovie>({
-      query: (saveMovie: NewMovie) => ({
+      query: (saveMovie) => ({
         url: `/movies`,
         method: 'POST',
         body: saveMovie,
@@ -73,7 +73,7 @@ export const moviesApiSlice = createApi({
     }),
 
     updateMovieById: build.mutation<Movie, Movie>({
-      query: (updateMovie: Movie) => ({
+      query: (updateMovie) => ({
         url: `/movies/${updateMovie._id}`,
         method: 'PUT',
         body: updateMovie,
@@ -107,7 +107,7 @@ export const moviesApiSlice = createApi({
     }),
 
     deleteMovieById: build.mutation<Movie, string>({
-      query: (movieId: string) => ({
+      query: (movieId) => ({
         url: `/movies/${movieId}`,
         method: 'DELETE',
       }),

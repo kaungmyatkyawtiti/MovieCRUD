@@ -19,14 +19,30 @@ export default function Error({
   }, [error]);
 
   return (
-    <Box sx={{ mx: "auto", py: 5 }}>
-      <Typography variant='h3'>
+    <Box
+      sx={{
+        width: "600px",
+        m: "20px auto",
+        textAlign: "center",
+        py: 5,
+      }}
+    >
+      <Typography
+        variant='h3'
+        sx={{
+          my: "20px",
+          color: "cadetblue"
+        }}
+      >
         Something went wrong!
       </Typography>
       <Button
         type='button'
         variant='contained'
         size='medium'
+        sx={{
+          my: "20px"
+        }}
         onClick={
           () => reset()
         }

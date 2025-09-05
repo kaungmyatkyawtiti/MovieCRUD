@@ -83,15 +83,30 @@ function MoviePage() {
 
   return (
     <Box p={3}>
+
       <Stack
-        direction="row"
+        direction={{ xs: "column", sm: "row" }}
+        spacing={{ xs: 3, sm: 1 }}
         sx={{
           justifyContent: "space-between",
-          alignItems: "center",
-          my: 2
+          alignItems: { xs: "flex-start", sm: "center" },
+          my: 1
         }}
       >
-        <Typography variant="h4" fontWeight="600">
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: {
+              sm: 600,
+              md: 700,
+            },
+            fontSize: {
+              xs: '1.5rem',
+              sm: '1.8rem',
+              md: '2.2rem',
+            },
+          }}
+        >
           🎬 My Movie Collections
         </Typography>
         <Button
@@ -111,7 +126,6 @@ function MoviePage() {
           Refresh
         </Button>
       </Stack>
-
       <Box
         sx={{
           my: 2

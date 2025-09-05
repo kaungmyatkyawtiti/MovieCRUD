@@ -18,6 +18,9 @@ import { NewMovie, useSaveMovieMutation, useUpdateMovieByIdMutation } from "@/li
 import { Movie } from "../types/movies";
 import { useEffect, useMemo } from "react";
 import z from 'zod';
+import { useDispatch } from "react-redux";
+import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
+import { log } from "@/app/utils/logger";
 
 interface MovieFormDialogProps {
   open: boolean;
@@ -66,6 +69,8 @@ export default function MovieFormDialog({
   onClose,
   movieToEdit,
 }: MovieFormDialogProps) {
+  const dispatch = useDispatch();
+
   const [saveMovie, saveMovieResult] = useSaveMovieMutation();
 
   const [updateMovie, updateMovieResult] = useUpdateMovieByIdMutation();
@@ -109,10 +114,14 @@ export default function MovieFormDialog({
   }, [movieToEdit, reset, defaultValues]);
 
   const onSubmit = (data: MovieFormData) => {
-    console.log(data);
+    // console.log(data);
     const newMovie: NewMovie = data;
     if (!movieToEdit) {
-      saveMovie(newMovie);
+      saveMovie(newMovie)
+        .then((data) => {
+          log("new movie successfully saved", data);
+          dispatch(showSnackbar("New movie saved successfully!"));
+        });
       reset();
       onClose();
     } else {
@@ -126,7 +135,11 @@ export default function MovieFormDialog({
           phoneNo: data.director.phoneNo,
         },
       }
-      updateMovie(updated);
+      updateMovie(updated)
+        .then((data) => {
+          log("successfully updated", data);
+          dispatch(showSnackbar("Movie updated successfully!"));
+        });
       onClose();
     }
   }

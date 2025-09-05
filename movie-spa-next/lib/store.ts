@@ -3,6 +3,7 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { moviesApiSlice } from "./features/movie/moviesApiSlice";
 import { reviewsApiSlice } from "./features/review/reviewsApiSlice";
 import { authSlice } from "./features/auth/authSlice";
+import { snackbarSlice } from "./features/snackbar/snackbarSlice";
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
@@ -10,6 +11,7 @@ const rootReducer = combineSlices(
   authSlice,
   moviesApiSlice,
   reviewsApiSlice,
+  snackbarSlice,
 );
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>;

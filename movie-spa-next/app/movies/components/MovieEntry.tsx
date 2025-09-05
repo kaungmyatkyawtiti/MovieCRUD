@@ -31,10 +31,16 @@ export default function MovieEntry() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        p: 4,
+        p: { xs: 0, md: 4 },
+        py: { xs: 2, md: 4 },
       }}
     >
-      <Typography variant="h6" fontWeight={500}>
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: 500
+        }}
+      >
         📽️ ReelBox
       </Typography>
       <Button

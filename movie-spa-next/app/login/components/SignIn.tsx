@@ -102,7 +102,15 @@ export default function SignIn() {
         justifyContent="center"
         sx={{ minHeight: '60vh' }}>
         <Card sx={{ maxWidth: 400, width: '100%', p: 4 }}>
-          <Typography variant="h5" component="h1" gutterBottom>
+          <Typography
+            variant="h5"
+            component="h1"
+            gutterBottom
+            sx={{
+              textAlign: "center",
+              fontWeight: 500
+            }}
+          >
             Login Your Account
           </Typography>
           <Box

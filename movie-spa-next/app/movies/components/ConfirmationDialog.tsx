@@ -9,14 +9,12 @@ export interface ConfirmationDialogRawProps {
   message: string;
   title: string;
   open: boolean;
-  onClose: () => void;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
 export default function ConfirmationDialog(props: ConfirmationDialogRawProps) {
   const {
-    onClose,
     title,
     message,
     open,
@@ -25,16 +23,6 @@ export default function ConfirmationDialog(props: ConfirmationDialogRawProps) {
     keepMounted,
     ...other
   } = props;
-
-  const handleOk = () => {
-    onClose();
-    onConfirm();
-  };
-
-  const handleCancel = () => {
-    onClose();
-    onCancel();
-  };
 
   return (
     <Dialog
@@ -45,7 +33,13 @@ export default function ConfirmationDialog(props: ConfirmationDialogRawProps) {
       {...other}
     >
       <DialogTitle>
-        <Box display="flex" alignItems="center" gap={1}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1
+          }}
+        >
           <Typography
             variant="h5"
             sx={{
@@ -65,12 +59,12 @@ export default function ConfirmationDialog(props: ConfirmationDialogRawProps) {
         <Button
           autoFocus
           color="error"
-          onClick={handleCancel}>
+          onClick={onCancel}>
           Cancel
         </Button>
         <Button
           color="success"
-          onClick={handleOk}>
+          onClick={onConfirm}>
           Ok
         </Button>
       </DialogActions>

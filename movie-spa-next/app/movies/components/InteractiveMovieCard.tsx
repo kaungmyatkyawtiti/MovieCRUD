@@ -8,12 +8,15 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import MovieCard from "./MovieCard";
 import { useDeleteMovieByIdMutation } from "@/lib/features/movie/moviesApiSlice";
 import { log } from "@/app/utils/logger";
+import { useDispatch } from "react-redux";
+import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
 
 interface InteractiveMovieCardProps {
   movie: Movie;
 }
 
 export default function InteractiveMovieCard({ movie }: InteractiveMovieCardProps) {
+  const dispatch = useDispatch();
 
   const [deleteMovie, deleteMovieResult] = useDeleteMovieByIdMutation();
 
@@ -23,37 +26,34 @@ export default function InteractiveMovieCard({ movie }: InteractiveMovieCardProp
 
   const [open, setOpen] = useState(false);
 
+  // For ConfirmationDialog
   const handleClose = () => {
     setOpen(false);
   };
 
-  // const handleShowConfirmDialog = () => {
-  //   setOpen(true);
-  // };
-  // const handleDelete = (movie: Movie) => {
-  //   handleShowConfirmDialog();
-  //   console.log("movie", movie);
-  // }
-  //
-  // const handleDeleteConfirm = () => {
-  //   console.log("confirm and delete");
-  //   deleteMovie(movie._id)
-  //     .then(data => console.log("successfully deleted", data));
-  // }
-
-  const handleDelete = (movie: Movie) => {
-    setTargetId(movie._id);
-    setOpen(true);
-  };
-
   const handleDeleteConfirm = (id: string) => {
     deleteMovie(id)
-      .then(data => log("successfully deleted", data));
+      .then((data) => {
+        log("successfully deleted", data);
+        dispatch(showSnackbar("Movie deleted successfully!"));
+      })
+      .catch((error) => {
+        log("delete error", error);
+        dispatch(showSnackbar("Failed to delete movie."));
+      });
+    handleClose();
   };
 
   const handleDeleteDecline = () => {
     log("decline");
+    handleClose();
   }
+
+  // For MovieCard
+  const handleDelete = (movie: Movie) => {
+    setTargetId(movie._id);
+    setOpen(true);
+  };
 
   const handleDetailClick = (movie: Movie) => {
     log("click");

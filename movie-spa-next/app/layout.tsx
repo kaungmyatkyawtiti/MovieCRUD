@@ -9,6 +9,7 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from "@emotion/react";
 import theme from "./src/theme";
 import Nav from "./components/Nav";
+import GlobalSnackbar from "./components/GlobalSnackbar";
 
 interface Props {
   readonly children: ReactNode;
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: Props) {
               <section className={styles.container}>
                 <Nav />
                 {children}
+                <GlobalSnackbar />
               </section>
             </ThemeProvider>
           </AppRouterCacheProvider>

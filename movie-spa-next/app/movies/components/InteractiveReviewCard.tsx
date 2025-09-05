@@ -7,6 +7,10 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import ReviewCard from "./ReviewCard";
 import { Review } from "../types/reviews";
 import { useDeleteReviewByIdMutation } from "@/lib/features/review/reviewsApiSlice";
+import { useAppStore } from "@/lib/hooks";
+import { useDispatch } from "react-redux";
+import { log } from "@/app/utils/logger";
+import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
 
 interface InteractiveReviewCardProps {
   review: Review;
@@ -15,41 +19,42 @@ interface InteractiveReviewCardProps {
 export default function InteractiveReviewCard({
   review,
 }: InteractiveReviewCardProps) {
+  const dispatch = useDispatch();
 
   const [deleteReview, deleteReviewResult] = useDeleteReviewByIdMutation();
 
   const [targetReview, setTargetReview] = useState<Review | null>(null);
 
-  const router = useRouter();
-
   const [open, setOpen] = useState(false);
 
-  const handleShowConfirmDialog = () => {
-    setOpen(true);
-  };
-
+  // For ConfirmationDialog
   const handleClose = () => {
     setOpen(false);
   };
 
-  // const handleDetailClick = (movie: Movie) => {
-  //   console.log("click");
-  //   router.push(`/movies/${movie._id}`);
-  // }
-
-  const handleDelete = (review: Review) => {
-    setTargetReview(review);
-    setOpen(true);
-  };
-
   const handleDeleteConfirm = (review: Review) => {
     deleteReview(review)
-      .then(data => console.log("successfully deleted", data));
+      .then(data => {
+        console.log("successfully deleted", data);
+        dispatch(showSnackbar("Review deleted successfully!"));
+      })
+      .catch((error) => {
+        log("delete error", error);
+        dispatch(showSnackbar("Failed to delete review."));
+      });
+    handleClose();
   };
 
   const handleDeleteDecline = () => {
     console.log("decline");
+    handleClose();
   }
+
+  // For ReviewCard
+  const handleDelete = (review: Review) => {
+    setTargetReview(review);
+    setOpen(true);
+  };
 
   return (
     <Box>
@@ -58,14 +63,11 @@ export default function InteractiveReviewCard({
         keepMounted={true}
         title={"Delete this comment"}
         message={"are you sure to delete?"}
-        onClose={handleClose}
         onConfirm={() => targetReview && handleDeleteConfirm(targetReview)}
         onCancel={handleDeleteDecline}
       />
       <ReviewCard
         review={review}
-        // onShowConfirmDialog={handleShowConfirmDialog}
-        // onDetailClick={handleDetailClick}
         onDelete={handleDelete}
       />
     </Box>

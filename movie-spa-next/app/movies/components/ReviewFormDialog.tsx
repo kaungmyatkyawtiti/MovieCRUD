@@ -18,6 +18,9 @@ import { useState, useEffect } from "react";
 import { Star as StarIcon } from "@mui/icons-material";
 import { useSaveReviewMutation, useUpdateReviewByIdMutation } from "@/lib/features/review/reviewsApiSlice";
 import { Review } from "../types/reviews";
+import { log } from "@/app/utils/logger";
+import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
+import { useDispatch } from "react-redux";
 
 interface ReviewFormDialogProps {
   open: boolean;
@@ -40,6 +43,8 @@ export default function ReviewFormDialog({
   movieId,
   reviewToEdit,
 }: ReviewFormDialogProps) {
+  const dispatch = useDispatch();
+
   const [saveReview] = useSaveReviewMutation();
   const [updateReview] = useUpdateReviewByIdMutation();
 
@@ -72,19 +77,31 @@ export default function ReviewFormDialog({
 
   const onSubmit = (data: ReviewFormData) => {
     if (reviewToEdit) {
-      updateReview({
+      const updated = {
         _id: reviewToEdit._id,
         movie: reviewToEdit.movie,
         review: data.review,
         rating, // use local rating state
-      });
+      }
+      updateReview(updated)
+        .then((data) => {
+          log("successfully updated", data);
+          dispatch(showSnackbar("Review updated successfully!"));
+        });
+      onClose();
     } else {
-      saveReview({
+      const newOne = {
         movie: movieId,
         review: data.review,
         rating, // use local rating state
-      });
+      }
+      saveReview(newOne)
+        .then((data) => {
+          log("new review successfully saved", data);
+          dispatch(showSnackbar("New review saved successfully!"));
+        });
     }
+    reset();
     onClose();
   };
 

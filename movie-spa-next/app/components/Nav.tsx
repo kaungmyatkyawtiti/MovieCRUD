@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import {
   AppBar,
@@ -186,6 +185,7 @@ export default function Nav() {
                   selected={pathname === href}
                   onClick={() => {
                     handleBlur();
+                    setOpen(false);
                   }}
                 >
                   <ListItemIcon

@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ApiResponse } from "../movie/moviesApiSlice";
 import { Review } from "@/app/movies/types/reviews";
 import { BASE_URL } from "@/lib/config";
 import { RootState } from "@/lib/store";
@@ -29,12 +28,12 @@ export const reviewsApiSlice = createApi({
   endpoints: (build) => ({
     getAllReviews: build.query<Review[], void>({
       query: () => `/reviews`,
-      transformResponse: (response: ApiResponse<Review[]>, meta, arg) => response.data,
+      transformResponse: (response: { data: Review[] }, meta, arg) => response.data,
     }),
 
     getReviewByMovieId: build.query<Review[], string>({
       query: (movieId: string) => `/reviews/movie/${movieId}`,
-      transformResponse: (response: ApiResponse<Review[]>, meta, arg) => response.data,
+      transformResponse: (response: { data: Review[] }, meta, arg) => response.data,
     }),
 
     saveReview: build.mutation<Review, NewReview>({
@@ -59,7 +58,7 @@ export const reviewsApiSlice = createApi({
           console.log("error is", err);
         }
       },
-      transformResponse: (response: ApiResponse<Review>, meta, arg) => response.data,
+      transformResponse: (response: { data: Review }, meta, arg) => response.data,
     }),
 
     updateReviewById: build.mutation<Review, Review>({
@@ -111,7 +110,7 @@ export const reviewsApiSlice = createApi({
           patchResult.undo();
         }
       },
-      transformResponse: (response: ApiResponse<Review>, meta, arg) => response.data,
+      transformResponse: (response: { data: Review }, meta, arg) => response.data,
     }),
 
   })

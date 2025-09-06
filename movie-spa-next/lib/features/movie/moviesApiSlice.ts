@@ -1,12 +1,8 @@
 import { Director, Movie } from "@/app/movies/types/movies";
+import { log } from "@/app/utils/logger";
 import { BASE_URL } from "@/lib/config";
 import { RootState } from "@/lib/store";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export interface ApiResponse<T> {
-  message: string;
-  data: T;
-}
 
 type NewDirector = Omit<Director, "_id">;
 export type NewMovie = Omit<Movie, "_id" | "director"> & {
@@ -19,7 +15,7 @@ export const moviesApiSlice = createApi({
     prepareHeaders: (headers, { getState }) => {
 
       const state = (getState() as RootState);
-      //console.log('prepareHeaders State ', state);
+      //log('prepareHeaders State ', state);
       if (state.auth.token) {
         headers.set('Authorization', 'Bearer ' + state.auth.token);
       }
@@ -37,12 +33,12 @@ export const moviesApiSlice = createApi({
     getAllMovies: build.query<Movie[], void>({
       query: () => `/movies`,
       // providesTags: ['Movie'],
-      transformResponse: (response: ApiResponse<Movie[]>, meta, arg) => response.data,
+      transformResponse: (response: { data: Movie[] }, meta, arg) => response.data,
     }),
 
     getMovieById: build.query<Movie, string>({
       query: (movieId) => `/movies/${movieId}`,
-      transformResponse: (response: ApiResponse<Movie>, meta, arg) => response.data,
+      transformResponse: (response: { data: Movie }, meta, arg) => response.data,
     }),
 
     saveMovie: build.mutation<Movie, NewMovie>({
@@ -52,10 +48,9 @@ export const moviesApiSlice = createApi({
         body: saveMovie,
       }),
       // invalidatesTags: ['Movie'],
-      // transformResponse: (response: ApiResponse<Movie>, meta, arg) => response.data,
 
       async onQueryStarted(movie: Movie, { dispatch, queryFulfilled }) {
-        console.log('movie to save', movie);
+        log('movie to save', movie);
 
         try {
           const { data: savedMovie } = await queryFulfilled;
@@ -64,12 +59,12 @@ export const moviesApiSlice = createApi({
               draft.push(savedMovie);
             }),
           );
-          console.log('Saved Movie', savedMovie);
+          log('Saved Movie', savedMovie);
         } catch (err) {
-          console.log('error is', err);
+          log('error is', err);
         }
       },
-      transformResponse: (response: ApiResponse<Movie>, meta, arg) => response.data,
+      transformResponse: (response: { data: Movie }, meta, arg) => response.data,
     }),
 
     updateMovieById: build.mutation<Movie, Movie>({
@@ -81,7 +76,7 @@ export const moviesApiSlice = createApi({
 
       // Optimistic Update
       async onQueryStarted(movie: Movie, { dispatch, queryFulfilled }) {
-        console.log('movie to update', movie);
+        log('movie to update', movie);
 
         const patchResult = dispatch(
           moviesApiSlice.util.updateQueryData('getAllMovies', undefined, (draft) => {
@@ -98,12 +93,12 @@ export const moviesApiSlice = createApi({
         );
         try {
           const { data: updatedMovie } = await queryFulfilled
-          console.log('successfully update movie', updatedMovie);
+          log('successfully update movie', updatedMovie);
         } catch (err) {
           patchResult.undo();
         }
       },
-      transformResponse: (response: ApiResponse<Movie>, meta, arg) => response.data,
+      transformResponse: (response: { data: Movie }, meta, arg) => response.data,
     }),
 
     deleteMovieById: build.mutation<Movie, string>({
@@ -114,7 +109,7 @@ export const moviesApiSlice = createApi({
 
       // Pessimistic Update
       //   async onQueryStarted(movieId: string, { dispatch, queryFulfilled }) {
-      //     console.log('movieId to delete', movieId);
+      //     log('movieId to delete', movieId);
       //
       //     let patchResult;
       //
@@ -127,17 +122,17 @@ export const moviesApiSlice = createApi({
       //            return draft;
       //         }),
       //       );
-      //       console.log('Deleted Movie', deletedMovie);
+      //       log('Deleted Movie', deletedMovie);
       //     } catch (err) {
-      //       console.log('error is', err);
+      //       log('error is', err);
       //     }
       //   },
-      //   transformResponse: (response: ApiResponse<Movie>, meta, arg) => response.data,
+      //   transformResponse: (response: {data: Movie}, meta, arg) => response.data,
       // })
 
       // Optimistic Update
       async onQueryStarted(movieId: string, { dispatch, queryFulfilled }) {
-        console.log('movieId to delete', movieId);
+        log('movieId to delete', movieId);
 
         const patchResult = dispatch(
           moviesApiSlice.util.updateQueryData('getAllMovies', undefined, (draft) => {
@@ -153,12 +148,12 @@ export const moviesApiSlice = createApi({
         );
         try {
           const { data: deletedMovie } = await queryFulfilled
-          console.log('successfully delete movie', deletedMovie);
+          log('successfully delete movie', deletedMovie);
         } catch (err) {
           patchResult.undo();
         }
       },
-      transformResponse: (response: ApiResponse<Movie>, meta, arg) => response.data,
+      transformResponse: (response: { data: Movie }, meta, arg) => response.data,
     }),
 
   })

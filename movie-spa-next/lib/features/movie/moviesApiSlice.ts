@@ -1,5 +1,5 @@
 import { Director, Movie } from "@/app/movies/types/movies";
-import { log } from "@/app/utils/logger";
+import { log, logError } from "@/app/utils/logger";
 import { BASE_URL } from "@/lib/config";
 import { RootState } from "@/lib/store";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -49,19 +49,23 @@ export const moviesApiSlice = createApi({
       }),
       // invalidatesTags: ['Movie'],
 
-      async onQueryStarted(movie: Movie, { dispatch, queryFulfilled }) {
-        log('movie to save', movie);
+      async onQueryStarted(newMovie: NewMovie, { dispatch, queryFulfilled }) {
+        log('movie to save', newMovie);
 
         try {
           const { data: savedMovie } = await queryFulfilled;
           dispatch(
-            moviesApiSlice.util.updateQueryData('getAllMovies', undefined, (draft) => {
-              draft.push(savedMovie);
-            }),
+            moviesApiSlice.util.updateQueryData(
+              'getAllMovies',
+              undefined,
+              (draft) => {
+                draft.push(savedMovie);
+              }
+            ),
           );
-          log('Saved Movie', savedMovie);
+          log('successfully save movie', savedMovie);
         } catch (err) {
-          log('error is', err);
+          logError('fail to save movie', err);
         }
       },
       transformResponse: (response: { data: Movie }, meta, arg) => response.data,
@@ -75,26 +79,31 @@ export const moviesApiSlice = createApi({
       }),
 
       // Optimistic Update
-      async onQueryStarted(movie: Movie, { dispatch, queryFulfilled }) {
-        log('movie to update', movie);
+      async onQueryStarted(updateMovie: Movie, { dispatch, queryFulfilled }) {
+        log('movie to update', updateMovie);
 
         const patchResult = dispatch(
-          moviesApiSlice.util.updateQueryData('getAllMovies', undefined, (draft) => {
+          moviesApiSlice.util.updateQueryData(
+            'getAllMovies',
+            undefined,
+            (draft) => {
 
-            // partial and patch 
-            // const target = draft.find(item => item._id === movie._id);
-            // if (target) {
-            //   Object.assign(target, movie);
-            // }
+              // partial and patch 
+              // const target = draft.find(item => item._id === movie._id);
+              // if (target) {
+              //   Object.assign(target, movie);
+              // }
 
-            draft = draft.map(item => item._id == movie._id ? movie : item);
-            return draft;
-          }),
+              draft = draft.map(item => item._id == updateMovie._id ? updateMovie : item);
+              return draft;
+            }
+          ),
         );
         try {
           const { data: updatedMovie } = await queryFulfilled
           log('successfully update movie', updatedMovie);
         } catch (err) {
+          logError("fail to update movie", err);
           patchResult.undo();
         }
       },
@@ -135,21 +144,25 @@ export const moviesApiSlice = createApi({
         log('movieId to delete', movieId);
 
         const patchResult = dispatch(
-          moviesApiSlice.util.updateQueryData('getAllMovies', undefined, (draft) => {
+          moviesApiSlice.util.updateQueryData(
+            'getAllMovies',
+            undefined,
+            (draft) => {
+              const index = draft.findIndex(item => item._id === movieId);
+              if (index !== -1) {
+                draft.splice(index, 1);
+              }
 
-            const index = draft.findIndex(item => item._id === movieId);
-            if (index !== -1) {
-              draft.splice(index, 1);
+              // draft = draft.filter(item => item._id != movieId);
+              // return draft;
             }
-
-            // draft = draft.filter(item => item._id != movieId);
-            // return draft;
-          }),
+          ),
         );
         try {
           const { data: deletedMovie } = await queryFulfilled
           log('successfully delete movie', deletedMovie);
         } catch (err) {
+          logError("fail to delete movie", err);
           patchResult.undo();
         }
       },

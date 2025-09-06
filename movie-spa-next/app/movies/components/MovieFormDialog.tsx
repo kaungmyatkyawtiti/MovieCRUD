@@ -48,11 +48,18 @@ interface MovieFormDialogProps {
 // type MovieFormData = InferType<typeof movieSchema>
 
 const movieSchema = z.object({
-  title: z.string().min(1, { message: "movie title is required" }),
-  director: z.object({
-    name: z.string().min(1, { message: "director name is required" }),
-    phoneNo: z.string().min(1, { message: "director phoneNo is required" }),
-  }),
+  title: z
+    .string()
+    .min(1, { message: "movie title is required" }),
+  director: z
+    .object({
+      name: z
+        .string()
+        .min(1, { message: "director name is required" }),
+      phoneNo: z
+        .string()
+        .min(1, { message: "director phoneNo is required" }),
+    }),
   year: z
     .coerce
     .number<number>({ message: "year must be a number" })
@@ -94,27 +101,12 @@ export default function MovieFormDialog({
     defaultValues
   })
 
-  // useEffect(() => {
-  //   if (movieToEdit) {
-  //     reset(movieToEdit); // editing mode
-  //   } else {
-  //     reset({
-  //       title: "",
-  //       director: {
-  //         name: "",
-  //         phoneNo: ""
-  //       },
-  //       year: undefined
-  //     }); // new movie
-  //   }
-  // }, [movieToEdit, reset]);
-
   useEffect(() => {
     reset(movieToEdit ?? defaultValues);
   }, [movieToEdit, reset, defaultValues]);
 
   const onSubmit = (data: MovieFormData) => {
-    // console.log(data);
+    log(data);
     const newMovie: NewMovie = data;
     if (!movieToEdit) {
       saveMovie(newMovie)

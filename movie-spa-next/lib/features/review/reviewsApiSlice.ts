@@ -73,6 +73,7 @@ export const reviewsApiSlice = createApi({
         body: updateReview,
       }),
 
+      // Pessimistic Update
       async onQueryStarted(updateReview: Review, { dispatch, queryFulfilled }) {
         log('review to update', updateReview);
 

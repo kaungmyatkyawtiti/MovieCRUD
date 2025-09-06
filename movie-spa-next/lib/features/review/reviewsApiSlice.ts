@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Review } from "@/app/movies/types/reviews";
 import { BASE_URL } from "@/lib/config";
 import { RootState } from "@/lib/store";
+import { log, logError } from "@/app/utils/logger";
 
 export type NewReview = Omit<Review, "_id">;
 
@@ -13,7 +14,7 @@ export const reviewsApiSlice = createApi({
     prepareHeaders: (headers, { getState }) => {
 
       const state = (getState() as RootState);
-      //console.log('prepareHeaders State ', state);
+      //log('prepareHeaders State ', state);
       if (state.auth.token) {
         headers.set('Authorization', 'Bearer ' + state.auth.token);
       }
@@ -32,30 +33,34 @@ export const reviewsApiSlice = createApi({
     }),
 
     getReviewByMovieId: build.query<Review[], string>({
-      query: (movieId: string) => `/reviews/movie/${movieId}`,
+      query: (movieId) => `/reviews/movie/${movieId}`,
       transformResponse: (response: { data: Review[] }, meta, arg) => response.data,
     }),
 
     saveReview: build.mutation<Review, NewReview>({
-      query: (saveReview: NewReview) => ({
+      query: (saveReview) => ({
         url: `/reviews`,
         method: 'POST',
         body: saveReview,
       }),
 
-      async onQueryStarted(review: Review, { dispatch, queryFulfilled }) {
-        console.log("review to save", review);
+      async onQueryStarted(newReview: NewReview, { dispatch, queryFulfilled }) {
+        log("review to save", newReview);
 
         try {
           const { data: savedReview } = await queryFulfilled;
           dispatch(
-            reviewsApiSlice.util.updateQueryData("getReviewByMovieId", savedReview.movie, (draft) => {
-              draft.unshift(savedReview);
-            }),
+            reviewsApiSlice.util.updateQueryData(
+              "getReviewByMovieId",
+              savedReview.movie,
+              (draft) => {
+                draft.push(savedReview);
+              }
+            ),
           );
-          console.log("saved Review", savedReview);
+          log('successfully save review', savedReview);
         } catch (err) {
-          console.log("error is", err);
+          logError('fail to save review', err);
         }
       },
       transformResponse: (response: { data: Review }, meta, arg) => response.data,
@@ -68,19 +73,24 @@ export const reviewsApiSlice = createApi({
         body: updateReview,
       }),
 
-      async onQueryStarted(review: Review, { dispatch, queryFulfilled }) {
-        console.log('review to update', review);
+      async onQueryStarted(updateReview: Review, { dispatch, queryFulfilled }) {
+        log('review to update', updateReview);
 
         const patchResult = dispatch(
-          reviewsApiSlice.util.updateQueryData('getReviewByMovieId', review.movie, (draft) => {
-            draft = draft.map(item => item._id == review._id ? review : item);
-            return draft;
-          }),
+          reviewsApiSlice.util.updateQueryData(
+            'getReviewByMovieId',
+            updateReview.movie,
+            (draft) => {
+              draft = draft.map(item => item._id === updateReview._id ? updateReview : item);
+              return draft;
+            }
+          ),
         )
         try {
-          const { data: updateReview } = await queryFulfilled
-          console.log('successfully update review', updateReview);
+          const { data: updatedReview } = await queryFulfilled
+          log('successfully update review', updatedReview);
         } catch (err) {
+          logError('fail to update review', err);
           patchResult.undo();
         }
       },
@@ -88,25 +98,29 @@ export const reviewsApiSlice = createApi({
     }),
 
     deleteReviewById: build.mutation<Review, Review>({
-      query: (review: Review) => ({
+      query: (review) => ({
         url: `/reviews/${review._id}`,
         method: 'DELETE',
       }),
 
       async onQueryStarted(review: Review, { dispatch, queryFulfilled }) {
-        console.log('review to delete', review._id);
+        log('review to delete', review._id);
 
         const patchResult = dispatch(
-          reviewsApiSlice.util.updateQueryData('getReviewByMovieId', review.movie, (draft) => {
-
-            draft = draft.filter(item => item._id != review._id);
-            return draft;
-          }),
+          reviewsApiSlice.util.updateQueryData(
+            'getReviewByMovieId',
+            review.movie,
+            (draft) => {
+              draft = draft.filter(item => item._id != review._id);
+              return draft;
+            }
+          ),
         );
         try {
           const { data: deletedReview } = await queryFulfilled
-          console.log('successfully delete review', deletedReview);
+          log('successfully delete review', deletedReview);
         } catch (err) {
+          logError('fail to delete review', err);
           patchResult.undo();
         }
       },

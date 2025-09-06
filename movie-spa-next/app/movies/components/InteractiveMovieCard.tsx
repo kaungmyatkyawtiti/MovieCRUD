@@ -67,7 +67,6 @@ export default function InteractiveMovieCard({ movie }: InteractiveMovieCardProp
         keepMounted={true}
         title={movie.title}
         message={"are you sure to delete?"}
-        onClose={handleClose}
         onConfirm={() => targetId && handleDeleteConfirm(targetId)}
         onCancel={handleDeleteDecline}
       />

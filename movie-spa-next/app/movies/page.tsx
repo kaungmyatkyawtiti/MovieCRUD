@@ -5,12 +5,11 @@ import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material"
 import {
   Refresh as RefreshIcon
 } from "@mui/icons-material";
-import IsAuth from "@/app/auth/IsAuth";
 import MovieList from "./components/MovieList";
 import MovieEntry from "./components/MovieEntry";
 import { useState } from 'react';
 import CustomLoading from '../components/CustomLoading';
-import { backIn } from "framer-motion";
+import IsAuth from "../components/IsAuth";
 
 // let movies: Movie[] = [
 //   {
@@ -65,6 +64,12 @@ function MoviePage() {
 
   const [isRefreshing, setIsRefreshing] = useState(false);
 
+  const handleBlur = () => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }
+
   const refreshHandler = async () => {
     console.log("refresh");
 
@@ -77,6 +82,7 @@ function MoviePage() {
     await Promise.all([refetch(), delay]);
 
     setIsRefreshing(false);
+    handleBlur();
   };
 
   const isSpinning = isLoading || isRefreshing;

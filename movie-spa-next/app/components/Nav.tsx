@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import {
   AppBar,
@@ -18,26 +19,43 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { usePathname } from "next/navigation";
-import useAuth from "../auth/useAuth";
 import Link from "next/link";
 import {
   LiveTv as LiveTvIcon,
   Home as HomeIcon,
   Logout as LogoutIcon,
-  Login as LoginIcon
+  Login as LoginIcon,
+  HowToReg as RegisterIcon
 } from "@mui/icons-material";
+import { useAppSelector } from "@/lib/hooks";
+import { selectAuthToken } from "@/lib/features/auth/authSlice";
 
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const navItems = useAuth()
-    ? [
-      { label: "Home", href: "/", Icon: HomeIcon },
-      { label: "Movies", href: "/movies", Icon: LiveTvIcon },
-      { label: "Logout", href: "/logout", Icon: LogoutIcon },
-    ]
-    : [{ label: "Login", href: "/login", Icon: LoginIcon }];
+  const authToken = useAppSelector(selectAuthToken);
+  const authNavItems =
+    authToken
+      ? [
+        { label: "Movies", href: "/movies", Icon: LiveTvIcon },
+        { label: "Logout", href: "/logout", Icon: LogoutIcon },
+      ]
+      : [
+        { label: "Login", href: "/login", Icon: LoginIcon },
+        { label: "Register", href: "/register", Icon: RegisterIcon },
+      ];
+
+  const navItems = [
+    { label: "Home", href: "/", Icon: HomeIcon },
+    ...authNavItems,
+  ];
+
+  const handleBlur = () => {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }
 
   return (
     <>
@@ -75,26 +93,28 @@ export default function Nav() {
           >
             {
               navItems.map(({ label, href, Icon }) => (
-                <Link key={href} href={href} passHref>
-                  <Button
-                    startIcon=<Icon fontSize="small" />
-                    sx={{
-                      px: 1,
-                      color: pathname === href ? "#fff" : "#e0e0e0",
-                      fontWeight: pathname === href ? "bold" : "normal",
-                      backgroundColor:
-                        pathname === href
-                          ? "rgba(255,255,255,0.15)"
-                          : "transparent",
-                      textTransform: "none",
-                      "&:hover": {
-                        backgroundColor: "rgba(255,255,255,0.2)",
-                      },
-                    }}
-                  >
-                    {label}
-                  </Button>
-                </Link>
+                <Button
+                  key={href}
+                  LinkComponent={Link}
+                  href={href}
+                  startIcon=<Icon fontSize="small" />
+                  onClick={handleBlur}
+                  sx={{
+                    px: 1,
+                    color: pathname === href ? "#fff" : "#e0e0e0",
+                    fontWeight: pathname === href ? "bold" : "normal",
+                    backgroundColor:
+                      pathname === href
+                        ? "rgba(255,255,255,0.15)"
+                        : "transparent",
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "rgba(255,255,255,0.2)",
+                    },
+                  }}
+                >
+                  {label}
+                </Button>
               ))
             }
           </Stack>
@@ -105,7 +125,7 @@ export default function Nav() {
               display: { xs: "flex", md: "none" }
             }}
             color="inherit"
-            onClick={() => setOpen(!open)}
+            onClick={() => setOpen(true)}
           >
             <MenuIcon />
           </IconButton>
@@ -113,20 +133,20 @@ export default function Nav() {
       </AppBar >
 
       {/* Drawer for Mobile */}
-      < Drawer
+      <Drawer
         anchor="left"
         open={open}
-        onClose={() => setOpen(!open)
-        }
+        onClose={() => setOpen(false)}
       >
         <Box
           sx={{
             mb: 6,
-            width: 300,
+            width: 280,
             height: 140,
             background: "linear-gradient(to left, #3f51b5, #2196f3)",
             position: "relative",
-          }}>
+          }}
+        >
           <Box
             sx={{
               gap: 2,
@@ -136,7 +156,8 @@ export default function Nav() {
               position: "absolute",
               left: 20,
               bottom: -30,
-            }}>
+            }}
+          >
             <Avatar
               sx={{
                 width: 94,
@@ -158,32 +179,34 @@ export default function Nav() {
         <List>
           {
             navItems.map(({ label, href, Icon }) => (
-              <Link key={href} href={href} passHref>
-                <ListItem sx={{ py: 1 }}>
-                  <ListItemButton
-                    selected={pathname === href}
-                    onClick={() => setOpen(!open)}
+              <ListItem key={href} disablePadding>
+                <ListItemButton
+                  LinkComponent={Link}
+                  href={href}
+                  selected={pathname === href}
+                  onClick={() => {
+                    handleBlur();
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 40,
+                      color: pathname === href ? "primary.main" : "inherit",
+                    }}
                   >
-                    <ListItemIcon
-                      sx={{
-                        minWidth: 40,
-                        color: pathname === href ? "primary.main" : "inherit",
-                      }}
-                    >
-                      <Icon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={label}
-                      slotProps={{
-                        primary: {
-                          fontWeight: pathname === href ? "bold" : "normal",
-                          color: pathname === href ? "primary" : "inherit",
-                        },
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
+                    <Icon fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={label}
+                    slotProps={{
+                      primary: {
+                        fontWeight: pathname === href ? "bold" : "normal",
+                        color: pathname === href ? "primary" : "inherit",
+                      },
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
             ))
           }
         </List>

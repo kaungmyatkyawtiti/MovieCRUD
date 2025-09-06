@@ -117,29 +117,6 @@ export const moviesApiSlice = createApi({
         method: 'DELETE',
       }),
 
-      // Pessimistic Update
-      //   async onQueryStarted(movieId: string, { dispatch, queryFulfilled }) {
-      //     log('movieId to delete', movieId);
-      //
-      //     let patchResult;
-      //
-      //     try {
-      //       const { data: deletedMovie } = await queryFulfilled;
-      //       patchResult = dispatch(
-      //         moviesApiSlice.util.updateQueryData('getAllMovies', undefined, (draft) => {
-      //         
-      //            draft = draft.filter(item => item._id != movieId);
-      //            return draft;
-      //         }),
-      //       );
-      //       log('Deleted Movie', deletedMovie);
-      //     } catch (err) {
-      //       log('error is', err);
-      //     }
-      //   },
-      //   transformResponse: (response: {data: Movie}, meta, arg) => response.data,
-      // })
-
       // Optimistic Update
       async onQueryStarted(movieId: string, { dispatch, queryFulfilled }) {
         log('movieId to delete', movieId);

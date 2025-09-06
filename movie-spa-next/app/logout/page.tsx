@@ -6,7 +6,8 @@ import { useState } from "react";
 import { useAppDispatch } from "@/lib/hooks";
 import { logout } from "@/lib/features/auth/authSlice";
 import { redirect } from "next/navigation";
-import IsAuth from "../auth/IsAuth";
+import { log } from "../utils/logger";
+import IsAuth from "../components/IsAuth";
 
 function LogoutPage() {
   const dispatch = useAppDispatch();
@@ -17,18 +18,21 @@ function LogoutPage() {
     setOpen(true);
   }
 
+  // For ConfirmationDialog
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleDecline = () => {
-    console.log("decline");
+    log("decline");
+    handleClose();
   }
 
   const handleConfirm = () => {
-    console.log("confirm");
+    log("confirm");
     dispatch(logout());
+    handleClose();
     redirect("/login");
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   return (
@@ -38,7 +42,6 @@ function LogoutPage() {
         keepMounted={true}
         title={"Logout this account"}
         message={"are you sure to Logout?"}
-        onClose={handleClose}
         onConfirm={handleConfirm}
         onCancel={handleDecline}
       />

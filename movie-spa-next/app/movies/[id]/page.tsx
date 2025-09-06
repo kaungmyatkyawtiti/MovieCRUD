@@ -12,7 +12,7 @@ import { useState } from "react";
 import MovieFormDialog from "../components/MovieFormDialog";
 import { Movie } from "../types/movies";
 import ReviewBox from "../components/ReviewBox";
-import IsAuth from "@/app/auth/IsAuth";
+import IsAuth from "@/app/components/IsAuth";
 
 function MovieDetailPage() {
   const router = useRouter();
@@ -35,12 +35,12 @@ function MovieDetailPage() {
     setOpen(false);
   };
 
-  const editHandler = () => {
+  const handleEdit = () => {
     console.log("edit");
     handleClickOpen();
   }
 
-  const backHandler = () => {
+  const handleBack = () => {
     console.log("back");
     router.back();
   }
@@ -58,7 +58,7 @@ function MovieDetailPage() {
           <IconButton
             color="error"
             edge="start"
-            onClick={backHandler}
+            onClick={handleBack}
           >
             <ArrowBackIcon />
           </IconButton>
@@ -74,7 +74,7 @@ function MovieDetailPage() {
             variant="contained"
             size="small"
             sx={{ my: 2 }}
-            onClick={editHandler}
+            onClick={handleEdit}
           >
             Edit
           </Button>

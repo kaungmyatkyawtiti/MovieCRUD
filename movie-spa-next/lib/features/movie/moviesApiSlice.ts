@@ -49,6 +49,7 @@ export const moviesApiSlice = createApi({
       }),
       // invalidatesTags: ['Movie'],
 
+      // Pessimistic Update
       async onQueryStarted(newMovie: NewMovie, { dispatch, queryFulfilled }) {
         log('movie to save', newMovie);
 

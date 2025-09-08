@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ConfirmationDialog from "./ConfirmationDialog";
 import ReviewCard from "./ReviewCard";
-import { Review } from "../types/reviews";
 import { useDeleteReviewByIdMutation } from "@/lib/features/review/reviewsApiSlice";
 import { useAppStore } from "@/lib/hooks";
 import { useDispatch } from "react-redux";
-import { log } from "@/app/utils/logger";
+import { log, logError } from "@/app/utils/logger";
 import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
+import { Review } from "@/app/types/reviews";
 
 interface InteractiveReviewCardProps {
   review: Review;
@@ -32,17 +32,17 @@ export default function InteractiveReviewCard({
     setOpen(false);
   };
 
-  const handleDeleteConfirm = (review: Review) => {
-    deleteReview(review)
-      .then(data => {
-        console.log("successfully deleted", data);
-        dispatch(showSnackbar("Review deleted successfully!"));
-      })
-      .catch((error) => {
-        log("delete error", error);
-        dispatch(showSnackbar("Failed to delete review."));
-      });
-    handleClose();
+  const handleDeleteConfirm = async (review: Review) => {
+    try {
+      const result = await deleteReview(review).unwrap();
+      log("successfully deleted", result);
+      dispatch(showSnackbar("Review deleted successfully!"));
+    } catch (error) {
+      logError("delete error", error);
+      dispatch(showSnackbar("Failed to delete review."));
+    } finally {
+      handleClose();
+    }
   };
 
   const handleDeleteDecline = () => {

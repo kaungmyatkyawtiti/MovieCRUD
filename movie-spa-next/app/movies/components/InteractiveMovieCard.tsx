@@ -1,15 +1,15 @@
 'use client';
 
 import { Box } from "@mui/material";
-import { Movie } from "../types/movies";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import ConfirmationDialog from "./ConfirmationDialog";
 import MovieCard from "./MovieCard";
 import { useDeleteMovieByIdMutation } from "@/lib/features/movie/moviesApiSlice";
-import { log } from "@/app/utils/logger";
+import { log, logError } from "@/app/utils/logger";
 import { useDispatch } from "react-redux";
 import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
+import { Movie } from "@/app/types/movies";
 
 interface InteractiveMovieCardProps {
   movie: Movie;
@@ -30,18 +30,17 @@ export default function InteractiveMovieCard({ movie }: InteractiveMovieCardProp
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handleDeleteConfirm = (id: string) => {
-    deleteMovie(id)
-      .then((data) => {
-        log("successfully deleted", data);
-        dispatch(showSnackbar("Movie deleted successfully!"));
-      })
-      .catch((error) => {
-        log("delete error", error);
-        dispatch(showSnackbar("Failed to delete movie."));
-      });
-    handleClose();
+  const handleDeleteConfirm = async (id: string) => {
+    try {
+      const result = await deleteMovie(id).unwrap();
+      log("successfully deleted", result);
+      dispatch(showSnackbar("Movie deleted successfully!"));
+    } catch (error) {
+      logError("delete error", error);
+      dispatch(showSnackbar("Failed to delete movie."));
+    } finally {
+      handleClose();
+    }
   };
 
   const handleDeleteDecline = () => {

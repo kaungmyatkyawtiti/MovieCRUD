@@ -1,9 +1,9 @@
 html,
 body {
-  min-height: 100vh;
   padding: 0;
   margin: 0;
   font-family: system-ui, sans-serif;
+  min-height: 100vh;
 }
 
 a {
@@ -14,7 +14,3 @@ a {
 * {
   box-sizing: border-box;
 }
-
-/* ul li { */
-/*   color: darkred; */
-/* } */

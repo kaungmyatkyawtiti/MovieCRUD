@@ -107,14 +107,14 @@ export default function MovieFormDialog({
 
   const onSubmit = (data: MovieFormData) => {
     log(data);
-    const newMovie: NewMovie = data;
     if (!movieToEdit) {
+      const newMovie: NewMovie = data;
       saveMovie(newMovie)
         .then((data) => {
           log("new movie successfully saved", data);
           dispatch(showSnackbar("New movie saved successfully!"));
+          reset();
         });
-      reset();
       onClose();
     } else {
       const updated: Movie = {
@@ -131,6 +131,7 @@ export default function MovieFormDialog({
         .then((data) => {
           log("successfully updated", data);
           dispatch(showSnackbar("Movie updated successfully!"));
+          reset();
         });
       onClose();
     }

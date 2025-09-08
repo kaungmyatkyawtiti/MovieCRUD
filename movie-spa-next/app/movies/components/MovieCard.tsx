@@ -1,5 +1,9 @@
-import { Box, Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardActions, CardContent, CardMedia, Divider, IconButton, Typography } from "@mui/material";
 import { Movie } from "../types/movies";
+import {
+  InfoOutline as InfoOutlineIcon,
+  DeleteOutline as DeleteOutlineIcon
+} from "@mui/icons-material";
 
 interface MovieCardProps {
   movie: Movie,
@@ -17,22 +21,19 @@ export default function MovieCard({
     <Box>
       <Card
         sx={{
-          width: { xs: "90vw", sm: onDetailClick ? 260 : "100%" },
+          width: { xs: "90vw", sm: onDetailClick ? 250 : "100%" },
+          transition: "transform 0.2s ease, box-shadow 0.2s ease",
+          ...(onDetailClick && {
+            "&:hover": {
+              transform: "translateY(-4px)",
+              boxShadow: 3,
+              cursor: "pointer",
+            },
+          }),
         }}
       >
         {/* Make CardActionArea clickable for entire card except buttons */}
-        <CardActionArea
-          onClick={
-            onDetailClick
-              ? onDetailClick
-              : undefined
-          }
-          sx={{
-            cursor: onDetailClick
-              ? 'pointer'
-              : 'default'
-          }}
-        >
+        <Box>
           <CardMedia
             component="img"
             image="https://www.vintagemovieposters.co.uk/wp-content/uploads/2019/06/IMG_9698.jpeg"
@@ -72,19 +73,31 @@ export default function MovieCard({
               Year: {movie.year}
             </Typography>
           </CardContent>
-        </CardActionArea>
+        </Box>
         {
-          onDelete &&
-          <CardActions >
-            <Button
-              size="medium"
-              color="error"
-              onClick={onDelete}
-              aria-label="delete movie"
-              title="Delete movie">
-              Delete
-            </Button>
-          </CardActions>
+          onDelete && onDetailClick &&
+          <>
+            <Divider />
+            <CardActions>
+              <IconButton
+                size="medium"
+                color="info"
+                onClick={onDetailClick}
+                aria-label="click for detail info"
+                title="detail info">
+                <InfoOutlineIcon />
+              </IconButton>
+
+              <IconButton
+                size="medium"
+                color="error"
+                onClick={onDelete}
+                aria-label="delete movie"
+                title="Delete movie">
+                <DeleteOutlineIcon />
+              </IconButton>
+            </CardActions>
+          </>
         }
       </Card>
     </Box >

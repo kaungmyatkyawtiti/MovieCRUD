@@ -8,7 +8,7 @@ const getReviewById = async (reviewId) =>
   Reviews.findById(reviewId).populate("movie");
 
 const getReviewByMovieId = async (movieId) =>
-  Reviews.find({ movie: movieId }).populate("movie");
+  Reviews.find({ movie: movieId });
 
 const saveReview = async ({ movie, rating, review }) => {
   const saved = await new Reviews({ movie, rating, review }).save();
@@ -19,9 +19,10 @@ const saveReview = async ({ movie, rating, review }) => {
 const updateReviewById = async (reviewId, review) => {
   const updated = await Reviews.findByIdAndUpdate(
     reviewId,
-
-    { ...review, movie: new mongoose.Types.ObjectId(review.movie) },
-
+    {
+      ...review,
+      movie: new mongoose.Types.ObjectId(String(review.movie))
+    },
     { new: true }
   );
   return updated;

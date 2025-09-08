@@ -29,6 +29,7 @@ export const reviewsApiSlice = createApi({
   endpoints: (build) => ({
     getAllReviews: build.query<Review[], void>({
       query: () => `/reviews`,
+      keepUnusedDataFor: 600,
       transformResponse: (response: { data: Review[] }, meta, arg) => response.data,
     }),
 

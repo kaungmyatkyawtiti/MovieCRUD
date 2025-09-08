@@ -33,14 +33,37 @@ export default function ReviewCard({
   }
 
   return (
-    <Card elevation={3} sx={{ borderRadius: 2 }}>
+    <Card
+      elevation={1}
+      sx={{
+        borderRadius: 2,
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        "&:hover": {
+          transform: "translateY(-4px)",
+          boxShadow: 3,
+          cursor: "pointer",
+        },
+      }}
+    >
       <CardContent>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center"
+          }}
+        >
           {/* Left: Rating + Rating value */}
-          <Box display="flex" alignItems="center" gap={1}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1
+            }}
+          >
             <Rating
               name="half-rating"
-              defaultValue={review.rating}
+              value={review.rating}
               precision={0.5}
               readOnly
             />
@@ -57,16 +80,17 @@ export default function ReviewCard({
               color="error"
               edge="start"
               onClick={() => onDelete(review)}
-              aria-label="delete review"
+              aria-label="click to delete review"
               title="Delete review">
               <DeleteIcon />
             </IconButton>
+
             <IconButton
               color="primary"
               edge="start"
               onClick={handleEdit}
-              aria-label="delete review"
-              title="Delete review">
+              aria-label="click to edit review"
+              title="Edit review">
               <EditIcon />
             </IconButton>
           </Box>
@@ -74,7 +98,10 @@ export default function ReviewCard({
 
         <Divider sx={{ my: 1 }} />
 
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+        >
           {review.review}
         </Typography>
       </CardContent>

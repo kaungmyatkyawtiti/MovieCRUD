@@ -48,14 +48,14 @@ export default function ReviewFormDialog({
   const [saveReview] = useSaveReviewMutation();
   const [updateReview] = useUpdateReviewByIdMutation();
 
-  // Local state for controlled Rating
+  // Rating  
   const [rating, setRating] = useState<number>(reviewToEdit?.rating ?? 0);
 
-  // Keep rating in sync when editing a different review
-  useEffect(() => {
-    setRating(reviewToEdit?.rating ?? 0);
-  }, [reviewToEdit, open]);
+  const handleChangeRating = (_: React.SyntheticEvent, newValue: number | null) => {
+    setRating(newValue ?? 0);
+  }
 
+  // hookform
   const {
     register,
     handleSubmit,
@@ -68,11 +68,11 @@ export default function ReviewFormDialog({
     },
   });
 
-  // Reset review text when opening dialog or editing a new review
   useEffect(() => {
     reset({
       review: reviewToEdit?.review ?? "",
     });
+    setRating(reviewToEdit?.rating ?? 0);
   }, [reviewToEdit, reset, open]);
 
   const onSubmit = (data: ReviewFormData) => {
@@ -87,6 +87,7 @@ export default function ReviewFormDialog({
         .then((data) => {
           log("successfully updated", data);
           dispatch(showSnackbar("Review updated successfully!"));
+          reset();
         });
       onClose();
     } else {
@@ -99,9 +100,9 @@ export default function ReviewFormDialog({
         .then((data) => {
           log("new review successfully saved", data);
           dispatch(showSnackbar("New review saved successfully!"));
+          reset();
         });
     }
-    reset();
     onClose();
   };
 
@@ -143,9 +144,9 @@ export default function ReviewFormDialog({
             <Grid size={12}>
               <Rating
                 name="rating"
-                value={rating} // controlled value
+                value={rating}
                 precision={0.5}
-                onChange={(_, newValue) => setRating(newValue ?? 0)}
+                onChange={handleChangeRating}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
               />
             </Grid>

@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -15,12 +16,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Resolver, useForm } from "react-hook-form";
 import { InferType } from "yup";
 import { NewMovie, useSaveMovieMutation, useUpdateMovieByIdMutation } from "@/lib/features/movie/moviesApiSlice";
-import { Movie } from "../types/movies";
 import { useEffect, useMemo } from "react";
 import z from 'zod';
 import { useDispatch } from "react-redux";
 import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
-import { log } from "@/app/utils/logger";
+import { log, logError } from "@/app/utils/logger";
+import { Movie } from "@/app/types/movies";
 
 interface MovieFormDialogProps {
   open: boolean;
@@ -105,37 +106,42 @@ export default function MovieFormDialog({
     reset(movieToEdit ?? defaultValues);
   }, [movieToEdit, reset, defaultValues]);
 
-  const onSubmit = (data: MovieFormData) => {
-    log(data);
-    if (!movieToEdit) {
-      const newMovie: NewMovie = data;
-      saveMovie(newMovie)
-        .then((data) => {
-          log("new movie successfully saved", data);
-          dispatch(showSnackbar("New movie saved successfully!"));
-          reset();
-        });
-      onClose();
-    } else {
-      const updated: Movie = {
-        _id: movieToEdit._id,
-        title: data.title,
-        year: data.year,
-        director: {
-          _id: movieToEdit.director._id,
-          name: data.director.name,
-          phoneNo: data.director.phoneNo,
-        },
+  const isSubmitting = saveMovieResult.isLoading || updateMovieResult.isLoading;
+
+  const onSubmit = async (data: MovieFormData) => {
+    try {
+      // log(data);
+      if (!movieToEdit) {
+        const newMovie = data;
+        const response = await saveMovie(newMovie).unwrap();
+
+        log("new movie successfully saved", response);
+        dispatch(showSnackbar("New movie saved successfully!"));
+      } else {
+        const updated: Movie = {
+          _id: movieToEdit._id,
+          title: data.title,
+          year: data.year,
+          director: {
+            _id: movieToEdit.director._id,
+            name: data.director.name,
+            phoneNo: data.director.phoneNo,
+          },
+        };
+
+        const response = await updateMovie(updated).unwrap();
+
+        log("successfully updated", response);
+        dispatch(showSnackbar("Movie updated successfully!"));
       }
-      updateMovie(updated)
-        .then((data) => {
-          log("successfully updated", data);
-          dispatch(showSnackbar("Movie updated successfully!"));
-          reset();
-        });
+    } catch (err) {
+      logError("fail to save/update movie", err);
+      dispatch(showSnackbar("Failed to save/update movie"));
+    } finally {
+      reset();
       onClose();
     }
-  }
+  };
 
   return (
     <Dialog
@@ -156,7 +162,11 @@ export default function MovieFormDialog({
         variant="h5"
         sx={{
           textAlign: "center",
-          fontWeight: 500
+          fontWeight: 500,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
         }}
       >
         {
@@ -164,6 +174,7 @@ export default function MovieFormDialog({
             ? "Edit Movie"
             : "New Movie"
         }
+        {isSubmitting && <CircularProgress size={20} />}
       </DialogTitle>
       <DialogContent
         sx={{
@@ -188,6 +199,7 @@ export default function MovieFormDialog({
                 {...register("title")}
                 helperText={errors.title?.message}
                 error={!!errors.title}
+                disabled={isSubmitting}
               />
             </Grid>
             <Grid size={12}>
@@ -199,6 +211,7 @@ export default function MovieFormDialog({
                 {...register("director.name")}
                 helperText={errors.director?.name?.message}
                 error={!!errors.director?.name}
+                disabled={isSubmitting}
               />
             </Grid>
             <Grid size={12}>
@@ -210,6 +223,7 @@ export default function MovieFormDialog({
                 {...register("director.phoneNo")}
                 helperText={errors.director?.phoneNo?.message}
                 error={!!errors.director?.phoneNo}
+                disabled={isSubmitting}
               />
             </Grid>
 
@@ -222,12 +236,40 @@ export default function MovieFormDialog({
                 {...register("year")}
                 helperText={errors.year?.message}
                 error={!!errors.year}
+                disabled={isSubmitting}
               />
             </Grid>
           </Grid>
           <DialogActions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="submit">Save</Button>
+            <Button
+              onClick={onClose}
+              sx={{
+                color: "red"
+              }}
+            >
+              Close
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1
+              }}
+            >
+              {
+                isSubmitting
+                  ? (
+                    <>
+                      <CircularProgress size={20} />
+                      Saving...
+                    </>
+                  ) : (
+                    "Save"
+                  )
+              }
+            </Button>
           </DialogActions>
         </form>
       </DialogContent>

@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,10 +18,10 @@ import { InferType } from "yup";
 import { useState, useEffect } from "react";
 import { Star as StarIcon } from "@mui/icons-material";
 import { useSaveReviewMutation, useUpdateReviewByIdMutation } from "@/lib/features/review/reviewsApiSlice";
-import { Review } from "../types/reviews";
-import { log } from "@/app/utils/logger";
+import { log, logError } from "@/app/utils/logger";
 import { showSnackbar } from "@/lib/features/snackbar/snackbarSlice";
 import { useDispatch } from "react-redux";
+import { Review } from "@/app/types/reviews";
 
 interface ReviewFormDialogProps {
   open: boolean;
@@ -45,8 +46,8 @@ export default function ReviewFormDialog({
 }: ReviewFormDialogProps) {
   const dispatch = useDispatch();
 
-  const [saveReview] = useSaveReviewMutation();
-  const [updateReview] = useUpdateReviewByIdMutation();
+  const [saveReview, saveReviewResult] = useSaveReviewMutation();
+  const [updateReview, updateReviewResult] = useUpdateReviewByIdMutation();
 
   // Rating  
   const [rating, setRating] = useState<number>(reviewToEdit?.rating ?? 0);
@@ -75,35 +76,37 @@ export default function ReviewFormDialog({
     setRating(reviewToEdit?.rating ?? 0);
   }, [reviewToEdit, reset, open]);
 
-  const onSubmit = (data: ReviewFormData) => {
-    if (reviewToEdit) {
-      const updated = {
-        _id: reviewToEdit._id,
-        movie: reviewToEdit.movie,
-        review: data.review,
-        rating, // use local rating state
+  const isSubmitting = saveReviewResult.isLoading || updateReviewResult.isLoading;
+
+  const onSubmit = async (data: ReviewFormData) => {
+    try {
+      if (reviewToEdit) {
+        const updated = {
+          _id: reviewToEdit._id,
+          movie: reviewToEdit.movie,
+          review: data.review,
+          rating,
+        };
+        const response = await updateReview(updated).unwrap();
+        log("successfully updated", response);
+        dispatch(showSnackbar("Review updated successfully!"));
+      } else {
+        const newOne = {
+          movie: movieId,
+          review: data.review,
+          rating,
+        };
+        const response = await saveReview(newOne).unwrap();
+        log("new review successfully saved", response);
+        dispatch(showSnackbar("New review saved successfully!"));
       }
-      updateReview(updated)
-        .then((data) => {
-          log("successfully updated", data);
-          dispatch(showSnackbar("Review updated successfully!"));
-          reset();
-        });
+    } catch (err) {
+      logError("fail to save/update review", err);
+      dispatch(showSnackbar("Failed to save/update review"));
+    } finally {
+      reset();
       onClose();
-    } else {
-      const newOne = {
-        movie: movieId,
-        review: data.review,
-        rating, // use local rating state
-      }
-      saveReview(newOne)
-        .then((data) => {
-          log("new review successfully saved", data);
-          dispatch(showSnackbar("New review saved successfully!"));
-          reset();
-        });
     }
-    onClose();
   };
 
   return (
@@ -121,12 +124,18 @@ export default function ReviewFormDialog({
         variant="h5"
         sx={{
           textAlign: "center",
-          fontWeight: 500
+          fontWeight: 500,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 1,
+
         }}
       >
         {
           reviewToEdit ? "Edit Review" : "New Review"
         }
+        {isSubmitting && <CircularProgress size={20} />}
       </DialogTitle>
       <DialogContent
         sx={{ py: 1 }}
@@ -148,6 +157,7 @@ export default function ReviewFormDialog({
                 precision={0.5}
                 onChange={handleChangeRating}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                disabled={isSubmitting}
               />
             </Grid>
 
@@ -160,13 +170,42 @@ export default function ReviewFormDialog({
                 {...register("review")}
                 helperText={errors.review?.message}
                 error={!!errors.review}
+                disabled={isSubmitting}
               />
             </Grid>
           </Grid>
 
           <DialogActions>
-            <Button onClick={onClose}>Cancel</Button>
-            <Button type="submit">Save</Button>
+            <Button
+              onClick={onClose}
+              sx={{
+                color: "red"
+              }}
+            >
+              Close
+            </Button>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1
+              }}
+
+            >
+              {
+                isSubmitting
+                  ? (
+                    <>
+                      <CircularProgress size={20} />
+                      Saving...
+                    </>
+                  ) : (
+                    "Save"
+                  )
+              }
+            </Button>
           </DialogActions>
         </form>
       </DialogContent>

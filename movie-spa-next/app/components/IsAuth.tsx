@@ -31,19 +31,23 @@ export default function IsAuth<T>(
     const router = useRouter();
     const authtoken = useAppSelector(selectAuthToken);
     const pathname = usePathname();
-    const [isChecking, setIsChecking] = useState(true);
+    const [isChecking, setIsChecking] = useState(!authtoken);
 
     log('Path name ', pathname);
 
     useEffect(() => {
-      const noRedirectQueryPages = ['/logout'];
+      const noRedirectPages = ['/logout'];
 
       if (!authtoken) {
-        if (noRedirectQueryPages.includes(pathname)) {
-          router.replace('/login');
-        } else {
-          router.push('/login?redirectUrl=' + pathname);
-        }
+        noRedirectPages.includes(pathname)
+          ? router.replace('/login')
+          : router.push('/login?redirectUrl=' + pathname);
+
+        // const redirectUrl =
+        //   noRedirectPages.includes(pathname)
+        //     ? '/login'
+        //     : `/login?redirectUrl=${pathname}`;
+        // router.replace(redirectUrl);
       } else {
         setIsChecking(false);
       }

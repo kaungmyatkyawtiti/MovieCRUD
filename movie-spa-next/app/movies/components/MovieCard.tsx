@@ -1,9 +1,9 @@
 import { Box, Card, CardActions, CardContent, CardMedia, Divider, IconButton, Typography } from "@mui/material";
-import { Movie } from "../types/movies";
 import {
   InfoOutline as InfoOutlineIcon,
   DeleteOutline as DeleteOutlineIcon
 } from "@mui/icons-material";
+import { Movie } from "@/app/types/movies";
 
 interface MovieCardProps {
   movie: Movie,

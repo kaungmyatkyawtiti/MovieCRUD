@@ -1,4 +1,4 @@
-import { Director, Movie } from "@/app/movies/types/movies";
+import { Director, Movie } from "@/app/types/movies";
 import { log, logError } from "@/app/utils/logger";
 import { BASE_URL } from "@/lib/config";
 import { RootState } from "@/lib/store";

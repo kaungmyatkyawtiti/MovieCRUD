@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Review } from "@/app/movies/types/reviews";
 import { BASE_URL } from "@/lib/config";
 import { RootState } from "@/lib/store";
 import { log, logError } from "@/app/utils/logger";
+import { Review } from "@/app/types/reviews";
 
 export type NewReview = Omit<Review, "_id">;
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { Movie } from "../types/movies"
+import { Movie } from "@/app/types/movies";
 import InteractiveMovieCard from "./InteractiveMovieCard"
 
 interface MovieListProps {

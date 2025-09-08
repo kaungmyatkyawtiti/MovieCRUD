@@ -86,6 +86,7 @@ const saveReview = handleAsync(async (req, res, nextx) => {
 });
 
 const updateReviewById = handleAsync(async (req, res, next) => {
+  await waitFor(5000);
   const { id: reviewId } = req.params;
 
   if (validateObjectId(reviewId, res)) return;

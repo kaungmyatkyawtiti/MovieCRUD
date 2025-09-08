@@ -10,7 +10,6 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import MovieFormDialog from "../components/MovieFormDialog";
-import { Movie } from "../types/movies";
 import ReviewBox from "../components/ReviewBox";
 import IsAuth from "@/app/components/IsAuth";
 import CustomLoading from "@/app/components/CustomLoading";
@@ -19,17 +18,16 @@ function MovieDetailPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
 
-  // const { movie } = useGetAllMoviesQuery(undefined, {
-  //   selectFromResult: ({ data }) => ({
-  //     movie: data?.find(item => item._id === id),
-  //   })
-  // })
+  //cache 
+  const { movie: cachedMovie } = useGetAllMoviesQuery(undefined, {
+    selectFromResult: ({ data }) => ({
+      movie: data?.find(item => item._id === id),
+    }),
+  });
 
-  const { data: movies } = useGetAllMoviesQuery();
-  const cachedMovie = movies?.find(item => item._id === id);
-
-  // Fetch by ID only if not in cache
+  // fetch by ID if not in cache
   const { data: movieById, isLoading } = useGetMovieByIdQuery(id, { skip: !!cachedMovie });
+
   const movie = cachedMovie || movieById;
 
   const [open, setOpen] = useState(false);

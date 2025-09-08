@@ -1,11 +1,12 @@
 import { Box, Card, CardContent, Divider, IconButton, Rating, Typography } from "@mui/material";
-import { Review } from "../types/reviews";
 import {
   Delete as DeleteIcon,
   Edit as EditIcon
 } from "@mui/icons-material";
 import { useState } from 'react';
 import ReviewFormDialog from './ReviewFormDialog';
+import { Review } from "@/app/types/reviews";
+import { log } from "@/app/utils/logger";
 
 export interface ReviewCardProps {
   review: Review;
@@ -28,9 +29,11 @@ export default function ReviewCard({
   };
 
   const handleEdit = () => {
-    console.log("edit");
+    log("edit");
     handleClickOpen();
   }
+
+  // log("review from ReviewCard", review);
 
   return (
     <Card

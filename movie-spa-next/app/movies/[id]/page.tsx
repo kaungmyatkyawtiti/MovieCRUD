@@ -1,6 +1,6 @@
 'use client';
 
-import { useGetAllMoviesQuery } from "@/lib/features/movie/moviesApiSlice";
+import { useGetAllMoviesQuery, useGetMovieByIdQuery } from "@/lib/features/movie/moviesApiSlice";
 import { useParams, useRouter } from "next/navigation";
 import MovieCard from "../components/MovieCard";
 import { Box, Button, IconButton, Typography } from "@mui/material";
@@ -13,37 +13,36 @@ import MovieFormDialog from "../components/MovieFormDialog";
 import { Movie } from "../types/movies";
 import ReviewBox from "../components/ReviewBox";
 import IsAuth from "@/app/components/IsAuth";
+import CustomLoading from "@/app/components/CustomLoading";
 
 function MovieDetailPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
 
-  const { movie } = useGetAllMoviesQuery(undefined, {
-    refetchOnMountOrArgChange: false,
-    selectFromResult: ({ data }) => ({
-      movie: data?.find(item => item._id === id),
-    })
-  })
+  // const { movie } = useGetAllMoviesQuery(undefined, {
+  //   selectFromResult: ({ data }) => ({
+  //     movie: data?.find(item => item._id === id),
+  //   })
+  // })
+
+  const { data: movies } = useGetAllMoviesQuery();
+  const cachedMovie = movies?.find(item => item._id === id);
+
+  // Fetch by ID only if not in cache
+  const { data: movieById, isLoading } = useGetMovieByIdQuery(id, { skip: !!cachedMovie });
+  const movie = cachedMovie || movieById;
 
   const [open, setOpen] = useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const handleClickOpen = () => setOpen(true);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
-  const handleEdit = () => {
-    console.log("edit");
-    handleClickOpen();
-  }
+  const handleEdit = () => handleClickOpen();
 
-  const handleBack = () => {
-    console.log("back");
-    router.back();
-  }
+  const handleBack = () => router.replace("/movies");
+
+  if (isLoading) return <CustomLoading />;
 
   return (
     <Box
@@ -69,7 +68,9 @@ function MovieDetailPage() {
         </Box>
 
         <Box position="relative">
-          <MovieCard movie={movie ?? {} as Movie} />
+          {
+            movie && <MovieCard movie={movie} />
+          }
           <Button
             variant="contained"
             size="small"

@@ -76,7 +76,7 @@ function MoviePage() {
     setIsRefreshing(true);
 
     const delay = new Promise((resolve, reject) =>
-      setTimeout(resolve, 3000)
+      setTimeout(resolve, 2000)
     );
 
     await Promise.all([refetch(), delay]);

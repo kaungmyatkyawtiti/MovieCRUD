@@ -38,7 +38,7 @@ function MovieDetailPage() {
 
   const handleEdit = () => handleClickOpen();
 
-  const handleBack = () => router.replace("/movies");
+  const handleBack = () => router.push("/movies");
 
   if (isLoading) return <CustomLoading />;
 

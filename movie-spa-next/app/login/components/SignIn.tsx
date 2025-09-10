@@ -5,9 +5,7 @@ import {
   Button,
   TextField,
   Typography,
-  Stack,
   Link,
-  Card,
   FormControlLabel,
   Checkbox,
 } from '@mui/material';
@@ -19,6 +17,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { login, selectAuthToken } from '@/lib/features/auth/authSlice';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
+import { log, logError } from '@/app/utils/logger';
 
 const userSchema = yup.object({
   username: yup
@@ -43,13 +42,9 @@ export default function SignIn() {
 
   useEffect(() => {
     if (authToken) {
-      if (redirectUrl) {
-        router.push(redirectUrl);
-      } else {
-        router.push("/");
-      }
+      router.push(redirectUrl || "/dashboard");
     }
-  }, []);
+  }, [authToken, redirectUrl, router]);
 
   const {
     register,
@@ -66,29 +61,38 @@ export default function SignIn() {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log('Sign in data:', data);
+    log('Sign in data:', data);
 
     dispatch(login(data))
       .then(
         success => {
-          console.log("success", success);
+          log("success", success);
           // router.push("/");
           if (redirectUrl) {
             router.push(redirectUrl);
           } else {
-            router.push("/");
+            router.push("/dashboard");
           }
         },
         error => {
-          console.log("error", error);
-          setError("username", {
-            type: "server",
-            message: "Invalid username or password",
-          });
-          setError("password", {
-            type: "server",
-            message: "Invalid username or password",
-          });
+          logError("error", error);
+
+          // setError("username", {
+          //   type: "server",
+          //   message: "Invalid username or password",
+          // });
+          // setError("password", {
+          //   type: "server",
+          //   message: "Invalid username or password",
+          // });
+
+          const fields: (keyof FormData)[] = ["username", "password"];
+          fields.forEach(field => {
+            setError(field, {
+              type: "server",
+              message: "Invalid username or password",
+            })
+          })
           reset(
             { username: "", password: "" },
             { keepErrors: true }

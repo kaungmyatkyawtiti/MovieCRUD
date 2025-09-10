@@ -24,7 +24,8 @@ import {
   Home as HomeIcon,
   Logout as LogoutIcon,
   Login as LoginIcon,
-  HowToReg as RegisterIcon
+  HowToReg as RegisterIcon,
+  SpaceDashboard as DashboardIcon
 } from "@mui/icons-material";
 import { useAppSelector } from "@/lib/hooks";
 import { selectAuthToken } from "@/lib/features/auth/authSlice";
@@ -37,6 +38,7 @@ export default function Nav() {
   const authNavItems =
     authToken
       ? [
+        { label: "Dashboard", href: "/dashboard", Icon: DashboardIcon },
         { label: "Movies", href: "/movies", Icon: LiveTvIcon },
         { label: "Logout", href: "/logout", Icon: LogoutIcon },
       ]

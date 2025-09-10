@@ -1,31 +1,10 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { BASE_URL } from "@/lib/config";
-import { RootState } from "@/lib/store";
 import { log, logError } from "@/app/utils/logger";
 import { Review } from "@/app/types/reviews";
+import { moviesApiSlice } from "../movie/moviesApiSlice";
 
 export type NewReview = Omit<Review, "_id">;
 
-export const reviewsApiSlice = createApi({
-  // baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/api" }),
-
-  baseQuery: fetchBaseQuery({
-    baseUrl: BASE_URL + "/api",
-    prepareHeaders: (headers, { getState }) => {
-
-      const state = (getState() as RootState);
-      //log('prepareHeaders State ', state);
-      if (state.auth.token) {
-        headers.set('Authorization', 'Bearer ' + state.auth.token);
-      }
-      return headers;
-    }
-  }),
-
-  reducerPath: "reviewsApi",
-
-  tagTypes: ["Review"],
-
+export const reviewsApiSlice = moviesApiSlice.injectEndpoints({
   endpoints: (build) => ({
     getAllReviews: build.query<Review[], void>({
       query: () => `/reviews`,

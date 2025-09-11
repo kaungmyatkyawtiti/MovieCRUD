@@ -89,14 +89,14 @@ export default function MovieFormDialog({
 
   const [updateMovie, updateMovieResult] = useUpdateMovieByIdMutation();
 
-  const defaultValues = useMemo(() => ({
+  const defaultValues = {
     title: "",
     director: {
       name: "",
       phoneNo: ""
     },
     year: undefined,
-  }), []);
+  };
 
   const {
     register,
@@ -110,7 +110,7 @@ export default function MovieFormDialog({
 
   useEffect(() => {
     reset(movieToEdit ?? defaultValues);
-  }, [movieToEdit, reset, defaultValues]);
+  }, [movieToEdit, reset]);
 
   const isSubmitting = saveMovieResult.isLoading || updateMovieResult.isLoading;
 

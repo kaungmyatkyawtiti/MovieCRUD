@@ -10,31 +10,16 @@ import { log } from "@/app/utils/logger";
 
 export interface ReviewCardProps {
   review: Review;
-  onDelete: (review: Review) => void;
+  onDelete?: (review: Review) => void;
+  onEdit?: () => void;
 }
 
 export default function ReviewCard({
   review,
   onDelete,
+  onEdit,
 }: ReviewCardProps) {
-
-  const [open, setOpen] = useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleEdit = () => {
-    log("edit");
-    handleClickOpen();
-  }
-
   // log("review from ReviewCard", review);
-
   return (
     <Card
       elevation={1}
@@ -56,7 +41,7 @@ export default function ReviewCard({
             alignItems: "center"
           }}
         >
-          {/* Left: Rating + Rating value */}
+          {/* Left */}
           <Box
             sx={{
               display: "flex",
@@ -75,28 +60,31 @@ export default function ReviewCard({
             </Typography>
           </Box>
 
-          {/* Right: Delete Button */}
-          <Box
-            sx={{ display: "flex", gap: 2 }}
-          >
-            <IconButton
-              color="error"
-              edge="start"
-              onClick={() => onDelete(review)}
-              aria-label="click to delete review"
-              title="Delete review">
-              <DeleteIcon />
-            </IconButton>
+          {/* Right but optional */}
+          {
+            onDelete && onEdit &&
+            <Box
+              sx={{ display: "flex", gap: 2 }}
+            >
+              <IconButton
+                color="error"
+                edge="start"
+                onClick={() => onDelete(review)}
+                aria-label="click to delete review"
+                title="Delete review">
+                <DeleteIcon />
+              </IconButton>
 
-            <IconButton
-              color="primary"
-              edge="start"
-              onClick={handleEdit}
-              aria-label="click to edit review"
-              title="Edit review">
-              <EditIcon />
-            </IconButton>
-          </Box>
+              <IconButton
+                color="primary"
+                edge="start"
+                onClick={onEdit}
+                aria-label="click to edit review"
+                title="Edit review">
+                <EditIcon />
+              </IconButton>
+            </Box>
+          }
         </Box>
 
         <Divider sx={{ my: 1 }} />
@@ -108,13 +96,6 @@ export default function ReviewCard({
           {review.review}
         </Typography>
       </CardContent>
-
-      <ReviewFormDialog
-        open={open}
-        onClose={handleClose}
-        movieId={review.movie}
-        reviewToEdit={review}
-      />
 
     </Card>
   )

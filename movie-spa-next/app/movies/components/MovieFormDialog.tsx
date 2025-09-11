@@ -51,19 +51,25 @@ interface MovieFormDialogProps {
 const movieSchema = z.object({
   title: z
     .string()
-    .min(1, { message: "movie title is required" }),
+    .nonempty({ message: "movie title is required" })
+    .min(3, { message: "movie title min must be 2" }),
   director: z
     .object({
       name: z
         .string()
-        .min(1, { message: "director name is required" }),
+        .nonempty({ message: "director name is required" })
+        .min(3, { message: "director name min must be 2" }),
       phoneNo: z
         .string()
-        .min(1, { message: "director phoneNo is required" }),
+        .nonempty({ message: "director phoneNo is required" })
+        .min(3, { message: "director phoneNo min must be 2" }),
     }),
   year: z
     .coerce
-    .number<number>({ message: "year must be a number" })
+    .number<number>()
+    .refine((val) => val !== 0, {
+      message: "year is required",
+    })
     .positive({ message: "year must be positive number" })
     .int({ message: "year must be an integer" })
     .min(1800, { message: "year must be at least 1800" })
@@ -192,9 +198,10 @@ export default function MovieFormDialog({
           <Grid container spacing={2}>
             <Grid size={12}>
               <TextField
+                type="text"
                 margin="dense"
                 fullWidth
-                variant="standard"
+                variant="filled"
                 label="Title"
                 {...register("title")}
                 helperText={errors.title?.message}
@@ -204,9 +211,10 @@ export default function MovieFormDialog({
             </Grid>
             <Grid size={12}>
               <TextField
+                type="text"
                 margin="dense"
                 fullWidth
-                variant="standard"
+                variant="filled"
                 label="Director name"
                 {...register("director.name")}
                 helperText={errors.director?.name?.message}
@@ -216,9 +224,10 @@ export default function MovieFormDialog({
             </Grid>
             <Grid size={12}>
               <TextField
+                type="number"
                 margin="dense"
                 fullWidth
-                variant="standard"
+                variant="filled"
                 label="Director phoneNo"
                 {...register("director.phoneNo")}
                 helperText={errors.director?.phoneNo?.message}
@@ -229,9 +238,10 @@ export default function MovieFormDialog({
 
             <Grid size={12}>
               <TextField
+                type="number"
                 margin="dense"
                 fullWidth
-                variant="standard"
+                variant="filled"
                 label="Year"
                 {...register("year")}
                 helperText={errors.year?.message}

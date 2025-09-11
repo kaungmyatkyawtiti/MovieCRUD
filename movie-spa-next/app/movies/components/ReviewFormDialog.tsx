@@ -30,11 +30,12 @@ interface ReviewFormDialogProps {
   reviewToEdit?: Review;
 }
 
-const reviewSchema = yup
-  .object({
-    review: yup.string().required("Review is required"),
-  })
-  .required();
+const reviewSchema = yup.object({
+  review: yup
+    .string()
+    .required("review is required")
+    .min(4, "review must be 4"),
+});
 
 type ReviewFormData = InferType<typeof reviewSchema>;
 
@@ -51,10 +52,6 @@ export default function ReviewFormDialog({
 
   // Rating  
   const [rating, setRating] = useState<number>(reviewToEdit?.rating ?? 0);
-
-  const handleChangeRating = (_: React.SyntheticEvent, newValue: number | null) => {
-    setRating(newValue ?? 0);
-  }
 
   // hookform
   const {
@@ -155,7 +152,9 @@ export default function ReviewFormDialog({
                 name="rating"
                 value={rating}
                 precision={0.5}
-                onChange={handleChangeRating}
+                onChange={(event, newValue) => {
+                  setRating(newValue ?? 0);
+                }}
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
                 disabled={isSubmitting}
               />
@@ -164,7 +163,7 @@ export default function ReviewFormDialog({
             <Grid size={12}>
               <TextField
                 fullWidth
-                variant="standard"
+                variant="filled"
                 label="Review"
                 margin="dense"
                 {...register("review")}
